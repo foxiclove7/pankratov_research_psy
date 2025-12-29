@@ -1,1609 +1,958 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Психологическое исследование</title>
-<style>
-/* Персиковая цветовая палитра */
-:root {
-  --peach-light: #FFE5D4;
-  --peach-medium: #FFD1B3;
-  --peach-dark: #FFB38A;
-  --peach-accent: #FF8C5A;
-  --text-dark: #5A3E36;
-  --text-light: #7A5C52;
-  --white: #FFF9F5;
-  --shadow: rgba(90, 62, 54, 0.1);
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--white);
-  color: var(--text-dark);
-  line-height: 1.6;
-  padding: 20px;
-  max-width: 1000px;
-  margin: 0 auto;
-  background-image: radial-gradient(var(--peach-light) 2px, transparent 2px);
-  background-size: 30px 30px;
-}
-
-/* Заголовки */
-h2, h3, h4 {
-  color: var(--peach-accent);
-  margin-bottom: 1rem;
-  font-weight: 600;
-}
-
-h2 {
-  font-size: 2rem;
-  border-bottom: 3px solid var(--peach-medium);
-  padding-bottom: 10px;
-}
-
-h3 {
-  font-size: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-h4 {
-  font-size: 1.2rem;
-  color: var(--text-light);
-}
-
-/* Экраны */
-.screen {
-  display: none;
-  background: white;
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px var(--shadow);
-  margin-bottom: 30px;
-  border: 2px solid var(--peach-light);
-}
-
-.screen.active {
-  display: block;
-  animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Вопросы */
-.question {
-  background: var(--peach-light);
-  padding: 20px;
-  margin-bottom: 15px;
-  border-radius: 15px;
-  border-left: 5px solid var(--peach-accent);
-  transition: transform 0.3s ease;
-  position: relative;
-}
-
-.question:hover {
-  transform: translateX(5px);
-}
-
-.question label {
-  display: inline-block;
-  margin-right: 15px;
-  margin-bottom: 8px;
-  padding: 10px 18px;
-  background: white;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 2px solid var(--peach-medium);
-  min-width: 140px;
-  text-align: center;
-}
-
-.question label:hover {
-  background: var(--peach-medium);
-  transform: translateY(-2px);
-  border-color: var(--peach-accent);
-}
-
-.question input[type="radio"]:checked + label {
-  background: var(--peach-accent);
-  color: white;
-  border-color: var(--peach-dark);
-  box-shadow: 0 4px 12px rgba(255, 140, 90, 0.3);
-  transform: translateY(-2px);
-}
-
-.question input[type="radio"]:checked + label::after {
-  content: " ✓";
-  font-weight: bold;
-  margin-left: 5px;
-}
-
-.question input[type="radio"] {
-  display: none;
-}
-
-/* Индикатор ответа */
-.answer-indicator {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: var(--peach-accent);
-  color: white;
-  padding: 5px 12px;
-  border-radius: 15px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  display: none;
-}
-
-.question.answered .answer-indicator {
-  display: block;
-}
-
-/* Поля ввода */
-input[type="text"],
-input[type="number"],
-select {
-  width: 100%;
-  padding: 12px 15px;
-  margin: 8px 0;
-  border: 2px solid var(--peach-medium);
-  border-radius: 10px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-  background: white;
-}
-
-input[type="text"]:focus,
-input[type="number"]:focus,
-select:focus {
-  outline: none;
-  border-color: var(--peach-accent);
-  box-shadow: 0 0 0 3px rgba(255, 140, 90, 0.2);
-}
-
-/* Кнопки */
-button {
-  background: linear-gradient(135deg, var(--peach-accent), var(--peach-dark));
-  color: white;
-  border: none;
-  padding: 14px 28px;
-  font-size: 1.1rem;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  margin-top: 20px;
-  box-shadow: 0 6px 20px rgba(255, 140, 90, 0.4);
-  display: inline-block;
-}
-
-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(255, 140, 90, 0.5);
-}
-
-button:active {
-  transform: translateY(-1px);
-}
-
-button:disabled {
-  background: var(--peach-light);
-  color: var(--text-light);
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-/* Прогресс бар */
-.progress-container {
-  width: 100%;
-  background: var(--peach-light);
-  height: 8px;
-  border-radius: 4px;
-  margin: 30px 0;
-  overflow: hidden;
-  position: relative;
-}
-
-.progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--peach-accent), var(--peach-dark));
-  width: 0%;
-  transition: width 0.5s ease;
-  border-radius: 4px;
-}
-
-.progress-text {
-  position: absolute;
-  right: 0;
-  top: -25px;
-  color: var(--text-light);
-  font-size: 0.9rem;
-}
-
-/* Блоки ПКГД */
-.pkgd-block {
-  background: linear-gradient(135deg, var(--white), var(--peach-light));
-  padding: 20px;
-  margin: 25px 0;
-  border-radius: 15px;
-  border: 2px solid var(--peach-medium);
-  position: relative;
-}
-
-.pkgd-option {
-  background: white;
-  margin: 12px 0;
-  padding: 15px;
-  border-radius: 10px;
-  border-left: 4px solid var(--peach-medium);
-  transition: all 0.3s ease;
-}
-
-.pkgd-option:hover {
-  transform: translateX(5px);
-  border-left-color: var(--peach-accent);
-}
-
-.pkgd-option label {
-  display: block;
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.pkgd-option input[type="radio"]:checked + label {
-  background: var(--peach-light);
-  border-left-color: var(--peach-accent);
-  color: var(--text-dark);
-  font-weight: 600;
-}
-
-.pkgd-option input[type="radio"]:checked + label::before {
-  content: "✔ ";
-  color: var(--peach-accent);
-  margin-right: 8px;
-}
-
-.pkgd-option input[type="radio"] {
-  display: none;
-}
-
-/* Инструкции */
-.instruction {
-  background: var(--peach-light);
-  padding: 18px;
-  border-radius: 12px;
-  margin: 20px 0;
-  font-style: italic;
-  border-left: 4px solid var(--peach-accent);
-  line-height: 1.5;
-}
-
-/* Чекбокс согласия */
-.consent-checkbox {
-  display: flex;
-  align-items: center;
-  background: var(--peach-light);
-  padding: 15px;
-  border-radius: 10px;
-  margin: 20px 0;
-}
-
-#consent {
-  margin-right: 15px;
-  transform: scale(1.4);
-  accent-color: var(--peach-accent);
-}
-
-/* Счетчик вопросов */
-.question-counter {
-  text-align: center;
-  margin: 15px 0;
-  color: var(--text-light);
-  font-weight: 600;
-  padding: 10px;
-  background: var(--peach-light);
-  border-radius: 10px;
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-  body {
-    padding: 10px;
-  }
-  
-  .screen {
-    padding: 20px;
-  }
-  
-  .question label {
-    display: block;
-    margin-bottom: 10px;
-    width: 100%;
-    min-width: auto;
-  }
-  
-  button {
-    width: 100%;
-    margin: 10px 0;
-  }
-  
-  h2 {
-    font-size: 1.5rem;
-  }
-  
-  .pkgd-block {
-    padding: 15px;
-  }
-}
-
-/* Анимация загрузки */
-.loading {
-  display: none;
-  text-align: center;
-  padding: 40px;
-}
-
-.loading.active {
-  display: block;
-}
-
-.spinner {
-  border: 5px solid var(--peach-light);
-  border-top: 5px solid var(--peach-accent);
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin 1s linear infinite;
-  margin: 20px auto;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Сообщения */
-.message {
-  padding: 15px;
-  border-radius: 10px;
-  margin: 15px 0;
-  display: none;
-}
-
-.message.success {
-  background: #E8F5E9;
-  color: #2E7D32;
-  border-left: 4px solid #4CAF50;
-  display: block;
-}
-
-.message.error {
-  background: #FFEBEE;
-  color: #C62828;
-  border-left: 4px solid #F44336;
-  display: block;
-}
-
-/* Подсказки */
-.tooltip {
-  position: relative;
-  display: inline-block;
-  cursor: help;
-}
-
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 200px;
-  background-color: var(--text-dark);
-  color: white;
-  text-align: center;
-  border-radius: 6px;
-  padding: 10px;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -100px;
-  opacity: 0;
-  transition: opacity 0.3s;
-  font-size: 0.9rem;
-  font-weight: normal;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* Навигация */
-.nav-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
-}
-
-.nav-buttons button:first-child {
-  background: var(--peach-light);
-  color: var(--text-dark);
-}
-
-/* Статус заполнения */
-.completion-status {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px 0;
-  padding: 15px;
-  background: var(--peach-light);
-  border-radius: 10px;
-}
-
-.status-item {
-  text-align: center;
-  flex: 1;
-}
-
-.status-item.completed .status-circle {
-  background: var(--peach-accent);
-  color: white;
-}
-
-.status-circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 10px;
-  font-weight: bold;
-  border: 2px solid var(--peach-medium);
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Психологическое исследование</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Все стили из предыдущего кода остаются */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        :root {
+            --primary-blue: #1e3a8a; --secondary-blue: #3b82f6; --light-blue: #eff6ff;
+            --dark-blue: #1e40af; --accent-blue: #60a5fa; --text-dark: #1f2937;
+            --text-light: #6b7280; --white: #ffffff; --gray: #f3f4f6; --border: #d1d5db;
+        }
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: var(--text-dark); line-height: 1.6; min-height: 100vh;
+            position: relative; overflow-x: hidden;
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+                            radial-gradient(circle at 80% 70%, rgba(30, 64, 175, 0.05) 0%, transparent 50%),
+                            radial-gradient(circle at 40% 80%, rgba(96, 165, 250, 0.05) 0%, transparent 50%);
+            z-index: -1;
+        }
+        .container { max-width: 800px; margin: 0 auto; padding: 30px 20px; position: relative; }
+        .page { background-color: rgba(255, 255, 255, 0.95); border-radius: 20px; box-shadow: 0 10px 30px rgba(30, 58, 138, 0.1); padding: 40px; margin-bottom: 30px; border: 1px solid rgba(59, 130, 246, 0.2); backdrop-filter: blur(10px); animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .hidden { display: none !important; }
+        h1, h2, h3 { color: var(--primary-blue); margin-bottom: 25px; text-align: center; }
+        h1 { font-size: 32px; border-bottom: 3px solid var(--secondary-blue); padding-bottom: 15px; margin-bottom: 30px; }
+        h2 { font-size: 28px; color: var(--dark-blue); margin-top: 10px; }
+        .intro-text { background: linear-gradient(135deg, var(--light-blue) 0%, #dbeafe 100%); padding: 25px; border-radius: 15px; border-left: 5px solid var(--secondary-blue); margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
+        .question { background: var(--white); margin: 25px 0; padding: 25px; border-radius: 15px; border: 2px solid var(--gray); transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .question:hover { border-color: var(--accent-blue); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15); }
+        .question::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: linear-gradient(to bottom, var(--secondary-blue), var(--accent-blue)); }
+        .question-number { display: inline-block; background: linear-gradient(135deg, var(--secondary-blue), var(--dark-blue)); color: white; width: 36px; height: 36px; border-radius: 50%; text-align: center; line-height: 36px; margin-right: 15px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
+        .question-text { font-weight: 600; margin-bottom: 20px; color: var(--text-dark); font-size: 18px; display: flex; align-items: center; min-height: 36px; }
+        .options-container { display: flex; flex-direction: column; gap: 15px; margin-left: 50px; }
+        .option { display: flex; align-items: center; padding: 15px 20px; border: 2px solid var(--border); border-radius: 12px; cursor: pointer; transition: all 0.3s ease; background: var(--white); }
+        .option:hover { background: var(--light-blue); border-color: var(--accent-blue); transform: translateX(5px); }
+        .option.selected { background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-color: var(--secondary-blue); font-weight: 600; color: var(--dark-blue); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2); }
+        .option input { margin-right: 15px; cursor: pointer; transform: scale(1.2); }
+        .text-input { width: 100%; padding: 15px 20px; border: 2px solid var(--border); border-radius: 12px; font-size: 16px; transition: all 0.3s; background: var(--white); margin-left: 50px; }
+        .text-input:focus { outline: none; border-color: var(--secondary-blue); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2); background: var(--light-blue); }
+        .btn { background: linear-gradient(135deg, var(--secondary-blue), var(--dark-blue)); color: white; border: none; padding: 18px 40px; border-radius: 12px; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 12px; margin: 40px auto 0; box-shadow: 0 6px 20px rgba(30, 64, 175, 0.3); position: relative; overflow: hidden; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(30, 64, 175, 0.4); }
+        .consent-container { background: linear-gradient(135deg, var(--light-blue) 0%, #dbeafe 100%); padding: 30px; border-radius: 15px; margin: 30px 0; border: 2px solid var(--accent-blue); }
+        .error-message { color: #dc2626; font-size: 15px; margin-top: 10px; padding: 10px 15px; background: rgba(220, 38, 38, 0.1); border-radius: 8px; border-left: 4px solid #dc2626; display: none; }
+        .test-instructions { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 25px; border-radius: 15px; margin-bottom: 30px; border-left: 5px solid var(--accent-blue); font-style: italic; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
+        .thank-you { text-align: center; padding: 60px 40px; background: linear-gradient(135deg, var(--light-blue) 0%, #dbeafe 100%); border-radius: 20px; border: 2px solid var(--accent-blue); }
+        .perma-scale { display: flex; flex-direction: column; align-items: center; margin: 25px 0 0 50px;}
+        .scale-labels { display: flex; justify-content: space-between; width: 100%; margin-bottom: 15px; font-size: 14px; color: var(--text-light); font-weight: 500; }
+        .scale-numbers { display: flex; justify-content: space-between; width: 100%; margin-top: 15px;}
+        .scale-number { width: 40px; height: 40px; border-radius: 50%; background: var(--gray); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; font-weight: bold; font-size: 16px; color: var(--text-dark);}
+        .scale-number:hover, .scale-number.selected { background: linear-gradient(135deg, var(--secondary-blue), var(--dark-blue)); color: white; transform: scale(1.1); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+        .progress-indicator {
+            display: flex; justify-content: space-between; margin-bottom: 40px; position: relative;
+        }
+        .progress-indicator::before {
+            content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 4px; background: var(--border); transform: translateY(-50%); z-index: 0;
+        }
+        .progress-step {
+            width: 30px; height: 30px; border-radius: 50%; background: var(--gray); border: 3px solid var(--border); position: relative; z-index: 1; transition: all 0.3s;
+        }
+        .progress-step.active {
+            background: var(--secondary-blue); border-color: var(--dark-blue); box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+        @media (max-width: 768px) {
+           .container { padding: 15px; }
+           .page { padding: 25px 20px; }
+           .question-text { flex-direction: column; align-items: flex-start; }
+           .options-container, .text-input, .perma-scale { margin-left: 0; margin-top: 15px; }
+           .scale-number { width: 35px; height: 35px; }
+          }
+    </style>
 </head>
-
 <body>
+    <div class="container">
+        <!-- Прогресс-индикатор -->
+        <div class="progress-indicator hidden" id="progress-indicator">
+            <div class="progress-step" data-step="1"></div>
+            <div class="progress-step" data-step="2"></div>
+            <div class="progress-step" data-step="3"></div>
+            <div class="progress-step" data-step="4"></div>
+            <div class="progress-step" data-step="5"></div>
+            <div class="progress-step" data-step="6"></div>
+        </div>
 
-<!-- 1. Приветствие -->
-<div class="screen active" id="screen-consent">
-  <h2>Уважаемые участницы исследования!</h2>
-  
-  <div class="instruction">
-    <p>Я, <strong>Полухтина Валерия Вадимовна</strong>, студентка 5 курса факультета психологии, 
-    провожу исследование в рамках выпускной квалификационной работы.</p>
-    
-    <p>Исследование посвящено <strong>Особенности психологической адаптации женщин к беременности в зависимости от акушерского анамнеза. исследование после самопроизвольного аборта.</strong>.</p>
-  </div>
-  
-  <p><strong>Вам нужно будет:</strong></p>
-  <ul style="margin: 15px 0 15px 20px; color: var(--text-light);">
-    <li>Пройти 4 психологических опросника</li>
-    <li>Время заполнения: 30-35 минут</li>
-    <li>Добровольное участие</li>
-    <li>Анонимность и конфиденциальность данных</li>
-    <li>Данные используются только в обобщённом виде</li>
-  </ul>
-  
-  <div class="consent-checkbox">
-    <input type="checkbox" id="consent">
-    <label for="consent" style="font-weight: 600; cursor: pointer;">
-      Я даю добровольное информированное согласие на участие в исследовании
-    </label>
-  </div>
-  
-  <button onclick="startSurvey()">Принять участие →</button>
-  
-  <div class="progress-container">
-    <div class="progress-bar" id="progress-bar"></div>
-    <div class="progress-text">0%</div>
-  </div>
-  
-  <div class="completion-status">
-    <div class="status-item completed">
-      <div class="status-circle">1</div>
-      <div>Согласие</div>
+        <!-- СТРАНИЦА 1: ПРИВЕТСТВИЕ -->
+        <div class="page" id="page-1">
+            <div class="logo"><i class="fas fa-brain"></i><h1>Психологическое исследование</h1></div>
+            <div class="intro-text">
+                <p><strong>Здравствуйте!</strong> Вы приглашены принять участие в психологическом исследовании, направленном на изучение индивидуальных особенностей и опыта взрослых людей.</p>
+                <p><strong>Участие является добровольным и анонимным;</strong> все полученные данные будут использованы исключительно в обобщённом виде для научных целей.</p>
+                <p>Заполнение анкеты займёт около <strong>20–25 минут</strong>. Вы можете прекратить участие на любом этапе без объяснения причин.</p>
+            </div>
+            <div class="consent-container">
+                <div class="consent-checkbox"><input type="checkbox" id="consent-checkbox">
+                    <div class="consent-text"><p><strong>Если вы согласны принять участие, пожалуйста, отметьте галочкой данное согласие:</strong></p>
+                        <ul><li>Мне понятны цели исследования</li><li>Мое участие является добровольным</li><li>Я могу отказаться от участия в любой момент</li><li>Мои данные будут использованы анонимно и обобщенно</li></ul>
+                    </div>
+                </div>
+                <div class="error-message" id="consent-error">Необходимо дать согласие на участие в исследовании</div>
+            </div>
+            <button class="btn" id="btn-next-1">Принять участие и начать <i class="fas fa-arrow-right"></i></button>
+        </div>
+
+        <!-- СТРАНИЦА 2: АНКЕТА -->
+        <div class="page hidden" id="page-2">
+            <h2>Анкета участника</h2>
+            <div class="intro-text"><p><strong>Инструкция:</strong> Анкета является анонимной. Полученные данные будут использованы исключительно в обобщённом виде для научных целей. Пожалуйста, отвечайте искренне.</p></div>
+            <form id="demographic-form">
+                <div class="question"><div class="question-text"><span class="question-number">1</span><span class="required">Ваш возраст</span></div>
+                    <div class="options-container"><label class="option"><input type="radio" name="age" value="18–24 года" required>18–24 года</label>
+                        <label class="option"><input type="radio" name="age" value="25–34 года">25–34 года</label>
+                        <label class="option"><input type="radio" name="age" value="35–44 года">35–44 года</label>
+                        <label class="option"><input type="radio" name="age" value="45–54 года">45–54 года</label>
+                        <label class="option"><input type="radio" name="age" value="55 лет и старше">55 лет и старше</label>
+                    </div>
+                </div>
+                <div class="question"><div class="question-text"><span class="question-number">2</span><span class="required">Ваш пол</span></div>
+                    <div class="options-container"><label class="option"><input type="radio" name="gender" value="Мужской" required>Мужской</label>
+                        <label class="option"><input type="radio" name="gender" value="Женский">Женский</label>
+                        <label class="option"><input type="radio" name="gender" value="Предпочитаю не указывать">Предпочитаю не указывать</label>
+                    </div>
+                </div>
+                <div class="question"><div class="question-text"><span class="question-number">3</span><span class="required">Страна проживания</span></div>
+                    <div class="options-container"><label class="option" onclick="toggleInput('country-input', 'country-russia')">
+                            <input type="radio" name="country" id="country-russia" value="Российская Федерация" required>Российская Федерация</label>
+                        <label class="option" onclick="toggleInput('country-input', 'country-other')">
+                            <input type="radio" name="country" id="country-other" value="Другая страна">Другая страна (указать)</label>
+                        <div id="country-input" style="margin-top: 15px; display: none;">
+                            <input type="text" class="text-input" id="country-other-text" placeholder="Введите название страны">
+                        </div>
+                    </div>
+                </div>
+                <div class="question"><div class="question-text"><span class="question-number">4</span><span class="required">Тип населённого пункта проживания</span></div>
+                    <div class="options-container"><label class="option"><input type="radio" name="location" value="Крупный город (более 1 млн жителей)" required>Крупный город (более 1 млн жителей)</label>
+                        <label class="option"><input type="radio" name="location" value="Город (100 тыс. – 1 млн)">Город (100 тыс. – 1 млн)</label>
+                        <label class="option"><input type="radio" name="location" value="Малый город / посёлок">Малый город / посёлок</label>
+                        <label class="option"><input type="radio" name="location" value="Сельская местность">Сельская местность</label>
+                    </div>
+                </div>
+                <div class="question"><div class="question-text"><span class="question-number">5</span><span class="required">Сфера вашей основной профессиональной деятельности</span></div>
+                    <input type="text" class="text-input" name="profession" placeholder="Например: образование, бизнес, IT, медицина, культура, управление и т.д." required>
+                </div>
+                <div class="question"><div class="question-text"><span class="question-number">6</span><span class="required">Ваш общий стаж профессиональной деятельности</span></div>
+                    <div class="options-container"><label class="option"><input type="radio" name="experience" value="Менее 1 года" required>Менее 1 года</label>
+                        <label class="option"><input type="radio" name="experience" value="1–3 года">1–3 года</label>
+                        <label class="option"><input type="radio" name="experience" value="4–7 лет">4–7 лет</label>
+                        <label class="option"><input type="radio" name="experience" value="8–15 лет">8–15 лет</label>
+                        <label class="option"><input type="radio" name="experience" value="Более 15 лет">Более 15 лет</label>
+                    </div>
+                </div>
+                <div class="question"><div class="question-text"><span class="question-number">7</span><span class="required">Занимаете ли вы в настоящее время управленческую позицию?</span></div>
+                    <div class="options-container"><label class="option"><input type="radio" name="manager" value="Да" required>Да</label>
+                        <label class="option"><input type="radio" name="manager" value="Нет">Нет</label>
+                    </div>
+                </div>
+                <div class="question"><div class="question-text"><span class="question-number">8</span><span class="required">Имеете ли вы коучинговое образование?</span></div>
+                    <div class="options-container"><label class="option" onclick="toggleCoachingFormat()">
+                            <input type="radio" name="coaching_edu" value="Да, профессиональное коучинговое образование" required>Да, профессиональное коучинговое образование</label>
+                        <label class="option" onclick="toggleCoachingFormat()">
+                            <input type="radio" name="coaching_edu" value="Прохожу обучение в настоящее время">Прохожу обучение в настоящее время</label>
+                        <label class="option" onclick="toggleCoachingFormat()">
+                            <input type="radio" name="coaching_edu" value="Проходил(а) краткосрочные курсы / тренинги по коучингу">Проходил(а) краткосрочные курсы / тренинги по коучингу</label>
+                        <label class="option" onclick="toggleCoachingFormat()">
+                            <input type="radio" name="coaching_edu" id="no-coaching" value="Нет, коучингового образования нет">Нет, коучингового образования нет</label>
+                    </div>
+                </div>
+                <div class="question" id="coaching-format-question" style="display: none;"><div class="question-text"><span class="question-number">9</span><span>Если у вас есть коучинговое образование, укажите его формат</span></div>
+                    <div class="options-container"><label class="option" onclick="toggleCoachingOther()">
+                            <input type="checkbox" name="coaching_format" value="Международная сертификация (ICF, EMCC и др.)">Международная сертификация (ICF, EMCC и др.)</label>
+                        <label class="option" onclick="toggleCoachingOther()">
+                            <input type="checkbox" name="coaching_format" value="Российская программа профессиональной переподготовки">Российская программа профессиональной переподготовки</label>
+                        <label class="option" onclick="toggleCoachingOther()">
+                            <input type="checkbox" name="coaching_format" value="Краткосрочные курсы / тренинги">Краткосрочные курсы / тренинги</label>
+                        <label class="option" onclick="toggleCoachingOther()">
+                            <input type="checkbox" name="coaching_format" id="coaching-other-checkbox" value="Другое">Другое (указать)</label>
+                        <div id="coaching-other-input" style="margin-top: 15px; display: none;">
+                            <input type="text" class="text-input" id="coaching-other-text" placeholder="Укажите другой формат">
+                        </div>
+                    </div>
+                </div>
+                <div class="question"><div class="question-text"><span class="question-number">10</span><span class="required">Используете ли вы коучинговые инструменты в профессиональной деятельности?</span></div>
+                    <div class="options-container"><label class="option"><input type="radio" name="coaching_use" value="Никогда" required>Никогда</label>
+                        <label class="option"><input type="radio" name="coaching_use" value="Редко">Редко</label>
+                        <label class="option"><input type="radio" name="coaching_use" value="Иногда">Иногда</label>
+                        <label class="option"><input type="radio" name="coaching_use" value="Часто">Часто</label>
+                        <label class="option"><input type="radio" name="coaching_use" value="Постоянно">Постоянно</label>
+                    </div>
+                </div>
+            </form>
+            <button class="btn" id="btn-next-2">Далее: Тест жизнестойкости <i class="fas fa-arrow-right"></i></button>
+        </div>
+
+        <!-- СТРАНИЦА 3-6: ТЕСТЫ (будут заполнены через JS) -->
+        <div class="page hidden" id="page-3"><h2>Тест жизнестойкости</h2><div class="test-instructions"><p><strong>Инструкция:</strong> Ответьте, пожалуйста, на несколько вопросов о себе. Выбирайте тот ответ, который наилучшим образом отражает Ваше мнение. Здесь нет правильных или неправильных ответов, так как важно только Ваше мнение. Подолгу не задумывайтесь над ответами. Работайте последовательно, не пропуская вопросов.</p></div><form id="hardiness-form"></form><button class="btn" id="btn-next-3">Далее: Опросник PERMA <i class="fas fa-arrow-right"></i></button></div>
+        <div class="page hidden" id="page-4"><h2>Опросник благополучия PERMA-Profiler</h2><div class="test-instructions"><p><strong>Инструкция:</strong> Просим Вас ответить на вопросы, представленные ниже. Выбирайте, пожалуйста, соответствующий вариант ответа, наиболее полно описывающий Вашу жизнь.</p></div><form id="perma-form"></form><button class="btn" id="btn-next-4">Далее: Шкала самоэффективности <i class="fas fa-arrow-right"></i></button></div>
+        <div class="page hidden" id="page-5"><h2>Шкала общей самоэффективности (GSE)</h2><div class="test-instructions"><p><strong>Инструкция:</strong> Пожалуйста, оцените, насколько каждое из следующих утверждений соответствует вам.</p></div><form id="gse-form"></form><button class="btn" id="btn-next-5">Далее: Опросник ЭМИН <i class="fas fa-arrow-right"></i></button></div>
+        <div class="page hidden" id="page-6"><h2>Опросник эмоционального интеллекта «ЭМИН»</h2><div class="test-instructions"><p><strong>Инструкция:</strong> Вам предлагается заполнить опросник, состоящий из 46 утверждений. Читайте внимательно каждое утверждение и отмечайте тот ответ, который лучше всего отражает Ваше мнение.</p></div><form id="emin-form"></form><button class="btn" id="btn-submit-all">Завершить исследование <i class="fas fa-check"></i></button></div>
+
+        <!-- СТРАНИЦА 7: ЗАВЕРШЕНИЕ -->
+        <div class="page hidden" id="page-7"><div class="thank-you"><i class="fas fa-heart"></i><h2>Благодарим вас за участие в исследовании!</h2><p>Ваши ответы имеют большое значение для научного анализа и будут использованы только в обобщённом виде.</p><p style="margin-top: 30px; font-size: 16px; color: var(--text-light);"><i class="fas fa-check-circle" style="color: var(--secondary-blue);"></i> Данные успешно сохранены</p></div></div>
     </div>
-    <div class="status-item">
-      <div class="status-circle">2</div>
-      <div>Демография</div>
-    </div>
-    <div class="status-item">
-      <div class="status-circle">3</div>
-      <div>С-Х</div>
-    </div>
-    <div class="status-item">
-      <div class="status-circle">4</div>
-      <div>CERQ</div>
-    </div>
-    <div class="status-item">
-      <div class="status-circle">5</div>
-      <div>ССП</div>
-    </div>
-    <div class="status-item">
-      <div class="status-circle">6</div>
-      <div>ПКГД</div>
-    </div>
-  </div>
-</div>
 
-<!-- 2. Демография (ваш существующий код) -->
-<div class="screen" id="screen-demography">
-  <h2>Общие сведения</h2>
-  
-  <!-- Ваши поля демографии остаются без изменений -->
-  <div class="question">
-    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Код участника или инициалы:</label>
-    <input type="text" name="code" placeholder="Например: ИИ123" required>
-  </div>
-  
-  <div class="question">
-    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Возраст (полных лет):</label>
-    <input type="number" name="age" min="18" max="55" placeholder="25" required>
-  </div>
-  
-  <div class="question">
-    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Город проживания:</label>
-    <input type="text" name="city" placeholder="Москва" required>
-  </div>
-  
-  <h3>Репродуктивный анамнез</h3>
-  
-  <div class="question">
-    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Был ли у вас самопроизвольный аборт в анамнезе?</label>
-    <label><input type="radio" name="group_abort" value="yes" required> Да</label>
-    <label><input type="radio" name="group_abort" value="no"> Нет</label>
-    <div class="answer-indicator">Выбрано</div>
-  </div>
-  
-  <div class="question">
-    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Количество беременностей:</label>
-    <input type="number" name="pregnancies" min="0" placeholder="0" required>
-  </div>
-  
-  <div class="question">
-    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Количество самопроизвольных абортов:</label>
-    <input type="number" name="miscarriages" min="0" placeholder="0" required>
-  </div>
-  
-  <div class="question">
-    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Есть ли у вас живорождённые дети?</label>
-    <label><input type="radio" name="children" value="yes" required> Да</label>
-    <label><input type="radio" name="children" value="no"> Нет</label>
-    <div class="answer-indicator">Выбрано</div>
-  </div>
-  
-  <div class="question">
-    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Срок после последнего самопроизвольного аборта:</label>
-    <input type="number" name="months_after_abort" placeholder="Оставьте пустым, если не было">
-    <small style="display: block; color: var(--text-light); margin-top: 5px;">Если не было — оставьте пустым</small>
-  </div>
-  
- <div class="question">
-    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Беременны ли сейчас? Или планируете беременность?</label>
-    <label><input type="radio" name="planning" value="planning_yes" required> Да, планирую</label>
-    <label><input type="radio" name="planning" value="planning_no"> Нет, не планирую</label>
-    <label><input type="radio" name="planning" value="pregnant_yes"> Да, беременна</label>
-    <label><input type="radio" name="planning" value="pregnant_no"> Нет, не беременна</label>
-    <div class="answer-indicator">Выбрано</div>
-  </div>
-  
-  <h3>Психологический и медицинский контекст</h3>
-  
-  <div class="question">
-    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Проходили ли вы психотерапию ранее?</label>
-    <label><input type="radio" name="therapy" value="yes" required> Да</label>
-    <label><input type="radio" name="therapy" value="no"> Нет</label>
-    <div class="answer-indicator">Выбрано</div>
-  </div>
-  
-  <div class="question">
-    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Принимаете ли вы в настоящее время психотропные препараты?</label>
-    <label><input type="radio" name="meds" value="yes" required> Да</label>
-    <label><input type="radio" name="meds" value="no"> Нет</label>
-    <div class="answer-indicator">Выбрано</div>
-  </div>
-  
-  <div class="question">
-    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Уровень образования:</label>
-    <select name="education" required>
-      <option value="">Выберите уровень образования</option>
-      <option>Среднее</option>
-      <option>Среднее специальное</option>
-      <option>Неоконченное высшее</option>
-      <option>Высшее</option>
-      <option>Ученая степень</option>
-    </select>
-  </div>
-  
-  <div class="nav-buttons">
-    <button onclick="next('screen-demography','screen-stai')">Далее →</button>
-  </div>
-  
-  <div class="progress-container">
-    <div class="progress-bar" id="progress-bar-demography"></div>
-    <div class="progress-text">14%</div>
-  </div>
-</div>
+    <!-- Скрытая форма для Google Forms -->
+    <iframe name="hidden-iframe" id="hidden-iframe" style="display: none;"></iframe>
+    <form id="google-form" action="https://docs.google.com/forms/d/e/1FAIpQLSdwi_jzRcKckvSo342WloKTqlJXq6l9Pn3JgRVzYWfF0W2H1Q/formResponse" method="POST" target="hidden-iframe">
+        <!-- Поля будут добавлены динамически -->
+    </form>
 
-<!-- 3. Спилбергер–Ханин (С-Х) -->
-<div class="screen" id="screen-stai">
-  <h2>Шкала тревожности</h2>
-  
-  <div class="instruction">
-    <p><strong>Инструкция:</strong> Прочитайте внимательно каждое из приведённых ниже утверждений 
-    и отметьте вариант ответа в зависимости от того, как вы себя чувствуете 
-    <strong>в данный момент</strong> (вопросы 1-20) и <strong>обычно</strong> (вопросы 21-40).</p>
-    <p>Над вопросами долго не задумывайтесь, правильных и неправильных ответов нет.</p>
-  </div>
-  
-  <div class="question-counter">Вопрос <span id="stai-current">1</span> из 40</div>
-  
-  <!-- Вопросы СТАИ из вашего файла -->
-  <div id="stai-questions">
-    <!-- Вопросы будут добавлены через JavaScript -->
-  </div>
-  
-  <div class="nav-buttons">
-    <button onclick="next('screen-stai','screen-cerq')">Далее →</button>
-  </div>
-  
-  <div class="progress-container">
-    <div class="progress-bar" id="progress-bar-stai"></div>
-    <div class="progress-text">28%</div>
-  </div>
-</div>
+    <script>
+        // === КОНФИГУРАЦИЯ ПО КЛЮЧАМ ===
+        const config = {
+            // Ключи преобразования
+            conversion: {
+                // Жизнестойкость: прямые вопросы
+                hardiness_direct: {"Нет": 0, "Скорее нет": 1, "Скорее да": 2, "Да": 3},
+                // Жизнестойкость: обратные вопросы (2,3,10,11,14,28,32,37,38,40,42 и др.)
+                hardiness_reverse: {"Нет": 3, "Скорее нет": 2, "Скорее да": 1, "Да": 0},
+                
+                // GSE: прямые вопросы
+                gse: {"Абсолютно неверно": 1, "Едва ли это верно": 2, "Скорее всего верно": 3, "Совершенно верно": 4},
+                
+                // ЭМИН: прямые вопросы
+                emin_direct: {"Совсем не согласен": 1, "Скорее не согласен": 2, "Скорее согласен": 3, "Полностью согласен": 4},
+                // ЭМИН: обратные вопросы (вопросы с минусом в ключе)
+                emin_reverse: {"Совсем не согласен": 4, "Скорее не согласен": 3, "Скорее согласен": 2, "Полностью согласен": 1},
+                
+                // PERMA: значения как есть (0-10)
+                perma: value => parseInt(value)
+            },
+            
+            // Обратные вопросы (индексы с 0)
+            reverseQuestions: {
+                hardiness: [1,2,9,10,13,27,31,36,37,39,41], // Вопросы 2,3,10,11,14,28,32,37,38,40,42
+                emin: [1,4,5,7,9,10,11,16,17,18,21,22,29,30,31,33,34,35,37,38,39,40,41,42,43,44,45] // Вопросы с минусом
+            },
+            
+            // Вопросы тестов
+            questions: {
+                hardiness: [
+                    "Я часто не уверен в собственных решениях",
+                    "Иногда мне кажется, что никому нет до меня дела",
+                    "Часто, даже хорошо выспавшись, я с трудом заставляю себя встать с постели",
+                    "Я постоянно занят, и мне это нравится",
+                    "Часто я предпочитаю «плыть по течению»",
+                    "Я меняю свои планы в зависимости от обстоятельств",
+                    "Меня раздражают события, из-за которых я вынужден менять свой распорядок дня",
+                    "Непредвиденные трудности порой сильно утомляют меня",
+                    "Я всегда контролирую ситуацию настолько, насколько это необходимо",
+                    "Порой я так устаю, что уже ничто не может заинтересовать меня",
+                    "Порой все, что я делаю, кажется мне бесполезным",
+                    "Я стараюсь быть в курсе всего происходящего вокруг меня",
+                    "Лучше синица в руках, чем журавль в небе",
+                    "Вечером я часто чувствую себя совершенно разбитым",
+                    "Я предпочитаю ставить перед собой труднодостижимые цели и добиваться их",
+                    "Иногда меня пугают мысли о будущем",
+                    "Я всегда уверен, что смогу воплотить в жизнь то, что задумал",
+                    "Мне кажется, что я не живу полной жизнью, а только играю роль",
+                    "Мне кажется, если бы в прошлом у меня было меньше разочарований и невзгод, мне было бы легче жить в настоящем",
+                    "Возникающие проблемы часто кажутся мне неразрешимыми",
+                    "Испытав поражение, я буду пытаться взять реванш",
+                    "Я люблю знакомиться с новыми людьми",
+                    "Когда кто-нибудь жалуется, что жизнь скучна, это значит, что он просто не умеет видеть интересное",
+                    "Мне всегда есть чем заняться",
+                    "Я всегда могу повлиять на результат того, что происходит вокруг",
+                    "Я часто сожалею о том, что уже сделано",
+                    "Если проблема требует больших усилий, я предпочту отложить её до лучших времен",
+                    "Мне трудно сближаться с другими людьми",
+                    "Как правило, окружающие слушают меня внимательно",
+                    "Если бы я мог, я многое изменил бы в прошлом",
+                    "Я довольно часто откладываю на завтра то, что трудно осуществимо, или то, в чем я не уверен",
+                    "Мне кажется, жизнь проходит мимо меня",
+                    "Мои мечты редко сбываются",
+                    "Неожиданности дарят мне интерес к жизни",
+                    "Порой мне кажется, что все мои усилия тщетны",
+                    "Порой я мечтаю о спокойной размеренной жизни",
+                    "Мне не хватает упорства закончить начатое",
+                    "Бывает, жизнь кажется мне скучной и бесцветной",
+                    "У меня нет возможности влиять на неожиданные проблемы",
+                    "Окружающие меня недооценивают",
+                    "Как правило, я работаю с удовольствием",
+                    "Иногда я чувствую себя лишним даже в кругу друзей",
+                    "Бывает, на меня наваливается столько проблем, что просто руки опускаются",
+                    "Друзья уважают меня за упорство и непреклонность",
+                    "Я охотно берусь воплощать новые идеи"
+                ],
+                perma: [
+                    "Как часто Вы чувствуете, что приближаетесь к своей цели?",
+                    "Как часто Вы бываете полностью поглощены тем, что делаете?",
+                    "Как часто Вы испытываете радость?",
+                    "Как часто Вы испытываете беспокойство?",
+                    "Как часто Вы достигаете важных целей, которые ставите перед собой?",
+                    "В целом, как Вы оцениваете Ваше здоровье?",
+                    "В какой степени Вы целеустремлены и живете полной/осмысленной жизнью?",
+                    "В какой степени Вы удовлетворены тем, какую помощь и поддержку от других Вы получаете, когда в ней нуждаетесь?",
+                    "В какой степени Вы считаете, что то, что Вы делаете в своей жизни, полезно и ценно?",
+                    "Как Вам кажется, насколько Вы увлечены или заинтересованы в чем-то?",
+                    "Насколько одиноким Вы себя чувствуете в этой жизни?",
+                    "Насколько Вы удовлетворены своим нынешним физическим здоровьем?",
+                    "Как часто Вы испытываете положительные (позитивные) эмоции?",
+                    "Как часто Вы злитесь?",
+                    "Как часто Вы выполняете возложенные на Вас обязанности?",
+                    "Как часто Вам бывает грустно?",
+                    "Как часто Вы бываете чем-то так сильно увлечены, что теряете счет времени?",
+                    "По сравнению с другими людьми того же возраста и пола как Вы оцениваете Ваше здоровье?",
+                    "В какой степени Вы чувствуете себя любимым?",
+                    "Насколько, как Вам кажется, Ваша жизнь имеет цель, и Вы движетесь к этой цели?",
+                    "Насколько Вы довольны взаимоотношениями в личной жизни?",
+                    "В целом, насколько Вы довольны своей жизнью?",
+                    "В целом, как Вам кажется, насколько Вы счастливы?"
+                ],
+                gse: [
+                    "Если я как следует постараюсь, то я всегда найду решение даже сложным проблемам.",
+                    "Если мне что-либо мешает, то я всё же нахожу пути достижения своей цели.",
+                    "Мне довольно просто удается достичь своих целей.",
+                    "В неожиданных ситуациях я всегда знаю, как я должен(-а) себя вести.",
+                    "При непредвиденно возникающих трудностях я верю, что смогу с ними справиться.",
+                    "Если я приложу достаточно усилий, то смогу справиться с большинством проблем.",
+                    "Я готов(-а) к любым трудностям, поскольку полагаюсь на собственные способности.",
+                    "Если передо мной встает какая-либо проблема, то я обычно нахожу несколько вариантов её решения.",
+                    "Я могу что-либо придумать даже в безвыходных на первый взгляд ситуациях.",
+                    "Я обычно способен(-а) держать ситуацию под контролем."
+                ],
+                emin: [
+                    "Я замечаю, когда близкий человек переживает, даже если он (она) пытается это скрыть",
+                    "Если человек на меня обижается, я не знаю, как восстановить с ним хорошие отношения",
+                    "Мне легко догадаться о чувствах человека по выражению его лица",
+                    "Я хорошо знаю, чем заняться, чтобы улучшить себе настроение",
+                    "У меня обычно не получается повлиять на эмоциональное состояние своего собеседника",
+                    "Когда я раздражаюсь, то не могу сдержаться, и говорю всё, что думаю",
+                    "Я хорошо понимаю, почему мне нравятся или не нравятся те или иные люди",
+                    "Я не сразу замечаю, когда начинаю злиться",
+                    "Я умею улучшить настроение окружающих",
+                    "Если я увлекаюсь разговором, то говорю слишком громко и активно жестикулирую",
+                    "Я понимаю душевное состояние некоторых людей без слов",
+                    "В экстремальной ситуации я не могу усилием вола взять себя в руки",
+                    "Я легко понимаю мимику и жесты других людей",
+                    "Когда я злюсь, я знаю, почему",
+                    "Я знаю, как ободрить человека, находящегося в тяжелой ситуации",
+                    "Окружающие считают меня слишком эмоциональным человеком",
+                    "Я способен успокоить близких, когда они находятся в напряжённом состоянии",
+                    "Мне бывает трудно описать, что я чувствую по отношению к другим",
+                    "Если я смущаюсь при общении с незнакомыми людьми, то могу это скрыть",
+                    "Глядя на человека, я легко могу понять его эмоциональное состояние",
+                    "Я контролирую выражение чувств на своем лице",
+                    "Бывает, что я не понимаю, почему испытываю то или иное чувство",
+                    "В критических ситуациях я умею контролировать выражение своих эмоций",
+                    "Если надо, я могу разозлить человека",
+                    "Когда я испытываю положительные эмоции, я знаю, как поддержать это состояние",
+                    "Как правило, я понимаю, какую эмоцию испытываю",
+                    "Если собеседник пытается скрыть свои эмоций, я сразу чувствую это",
+                    "Я знаю как успокоиться, если я разозлился",
+                    "Можно определить, что чувствует человек, просто прислушиваясь к звучанию его голоса",
+                    "Я не умею управлять эмоциями других людей",
+                    "Мне трудно отличить чувство вины от чувства стыда",
+                    "Я умею точно угадывать, что чувствуют мои знакомые",
+                    "Мне трудно справляться с плохим настроением",
+                    "Если внимательно следить за выражением лица человека, то можно понять, какие эмоции он скрывает",
+                    "Я не нахожу слов, чтобы описать свои чувства друзьям",
+                    "Мне удаётся поддержать людей, которые делятся со мной своими переживаниями",
+                    "Я умею контролировать свои эмоции",
+                    "Если мой собеседник начинает раздражаться, я подчас замечаю это слишком поздно",
+                    "По интонации моего голоса легко догадаться о том, что я чувствую",
+                    "Если близкий человек плачет, я теряюсь",
+                    "Мне бывает весело или грустно без всякой причины",
+                    "Мне трудно предвидеть смену настроения у окружающих меня людей",
+                    "Я не умею преодолевать страх",
+                    "Бывает, что я хочу поддержать человека, а он этого не чувствует, не понимает",
+                    "У меня бывают чувства, которые я не могу точно определить",
+                    "Я не понимаю, почему некоторые люди на меня обижаются"
+                ]
+            }
+        };
 
-<!-- 4. CERQ -->
-<div class="screen" id="screen-cerq">
-  <h2>Опросник когнитивной регуляции эмоций (CERQ)</h2>
-  
-  <div class="instruction">
-    <p><strong>Инструкция:</strong> Ниже приводятся утверждения, касающиеся того, что вы думаете после того, 
-    как с вами произошло неприятное или стрессовое событие. 
-    Укажите, как часто вы думаете подобным образом.</p>
-  </div>
-  
-  <div class="question-counter">Вопрос <span id="cerq-current">1</span> из 36</div>
-  
-  <!-- Вопросы CERQ из вашего файла -->
-  <div id="cerq-questions">
-    <!-- Вопросы будут добавлены через JavaScript -->
-  </div>
-  
-  <div class="nav-buttons">
-    <button onclick="next('screen-cerq','screen-lazarus')">Далее →</button>
-  </div>
-  
-  <div class="progress-container">
-    <div class="progress-bar" id="progress-bar-cerq"></div>
-    <div class="progress-text">50%</div>
-  </div>
-</div>
+        // === ID полей Google Forms (НУЖНО ЗАПОЛНИТЬ!) ===
+        const fieldIds = {
+            // АНКЕТА (текст)
+            age: "entry.1352937802",
+            gender: "entry.2056791556",
+            country: "entry.1766384140",
+            country_other: "entry.1451513439",
+            location: "entry.1234567890", // ЗАМЕНИТЬ
+            profession: "entry.1234567891", // ЗАМЕНИТЬ
+            experience: "entry.1234567892", // ЗАМЕНИТЬ
+            manager: "entry.1234567893", // ЗАМЕНИТЬ
+            coaching_edu: "entry.1234567894", // ЗАМЕНИТЬ
+            coaching_format: "entry.1234567895", // ЗАМЕНИТЬ
+            coaching_other: "entry.1234567896", // ЗАМЕНИТЬ
+            coaching_use: "entry.1234567897", // ЗАМЕНИТЬ
+            gse_result: "entry.1234567898", // ЗАМЕНИТЕ на реальный ID из Google Forms
+            
+            // ЖИЗНЕСТОЙКОСТЬ (числа 0-3)
+            h1: "entry.637969672", h2: "entry.1080328775", h3: "entry.1642461202", h4: "entry.1004132077",
+            h5: "entry.2098305672", h6: "entry.1266042466", h7: "entry.2057516103", h8: "entry.1405091370",
+            h9: "entry.35065539", h10: "entry.2024972268", h11: "entry.1164536568", h12: "entry.1331492701",
+            h13: "entry.1623368838", h14: "entry.1485116985", h15: "entry.1628688220", h16: "entry.537412057",
+            h17: "entry.1948236222", h18: "entry.2041037792", h19: "entry.1047614827", h20: "entry.1755324816",
+            h21: "entry.1849232278", h22: "entry.1376502028", h23: "entry.1314045082", h24: "entry.691310271",
+            h25: "entry.238315054", h26: "entry.664833969", h27: "entry.382722974", h28: "entry.2027270734",
+            h29: "entry.182666469", h30: "entry.1221020191", h31: "entry.2113339701", h32: "entry.1571969723",
+            h33: "entry.1516258433", h34: "entry.2086523974", h35: "entry.1380114567", h36: "entry.277960068",
+            h37: "entry.281396879", h38: "entry.1368910803", h39: "entry.1537059741", h40: "entry.1705136242",
+            h41: "entry.1781892385", h42: "entry.656029599", h43: "entry.88812415", h44: "entry.928254977",
+            h45: "entry.1620853572",
+            
+            // PERMA (числа 0-10)
+            p1: "entry.595247189", p2: "entry.2058567049", p3: "entry.1176570669", p4: "entry.2141174479",
+            p5: "entry.2078304661", p6: "entry.1245030776", p7: "entry.1425453851", p8: "entry.1461736934",
+            p9: "entry.1917841530", p10: "entry.1151178463", p11: "entry.1273637025", p12: "entry.1635683015",
+            p13: "entry.1657388446", p14: "entry.1967426680", p15: "entry.643526271", p16: "entry.1532834154",
+            p17: "entry.1800589773", p18: "entry.328287546", p19: "entry.1942611562", p20: "entry.1383653759",
+            p21: "entry.1861012736", p22: "entry.254166997", p23: "entry.1009326829",
+            
+            // GSE (числа 1-4)
+            g1: "entry.1676361897", g2: "entry.1433583400", g3: "entry.337870566", g4: "entry.843412834",
+            g5: "entry.224231724", g6: "entry.934042715", g7: "entry.982365857", g8: "entry.2047650913",
+            g9: "entry.1758514267", g10: "entry.1805380507",
+            
+            // ЭМИН (числа 1-4)
+            e1: "entry.1368160812", e2: "entry.1023023815", e3: "entry.1946208520", e4: "entry.1761389995",
+            e5: "entry.325762715", e6: "entry.647096614", e7: "entry.987804744", e8: "entry.723678323",
+            e9: "entry.709669552", e10: "entry.1420980281", e11: "entry.234022751", e12: "entry.366722150",
+            e13: "entry.516925014", e14: "entry.1310850647", e15: "entry.1637631847", e16: "entry.1225040940",
+            e17: "entry.1588435359", e18: "entry.1508583588", e19: "entry.2002363989", e20: "entry.1813696963",
+            e21: "entry.437786522", e22: "entry.2124599046", e23: "entry.517379941", e24: "entry.507924103",
+            e25: "entry.739451298", e26: "entry.325861704", e27: "entry.125786078", e28: "entry.952420552",
+            e29: "entry.960393634", e30: "entry.126132735", e31: "entry.335448281", e32: "entry.1422741638",
+            e33: "entry.1681714293", e34: "entry.275879103", e35: "entry.926759871", e36: "entry.977029036",
+            e37: "entry.699275990", e38: "entry.1457104056", e39: "entry.204133423", e40: "entry.1400392877",
+            e41: "entry.2142379603", e42: "entry.511278545", e43: "entry.1549754441", e44: "entry.1625419742",
+            e45: "entry.2011195597", e46: "entry.129199237"
+        };
 
-<!-- 5. ССП Лазаруса -->
-<div class="screen" id="screen-lazarus">
-  <h2>Стратегии совладания со стрессом</h2>
-  
-  <div class="instruction">
-    <p><strong>Инструкция:</strong> Оказавшись в трудной жизненной ситуации, я...</p>
-    <p>Оцените, как часто данные варианты поведения проявляются у вас:</p>
-    <ul style="margin: 10px 0 10px 20px;">
-      <li><strong>0 - Никогда</strong></li>
-      <li><strong>1 - Редко</strong></li>
-      <li><strong>2 - Иногда</strong></li>
-      <li><strong>3 - Часто</strong></li>
-    </ul>
-  </div>
-  
-  <div class="question-counter">Вопрос <span id="lazarus-current">1</span> из 50</div>
-  
-  <!-- Вопросы ССП из вашего файла -->
-  <div id="lazarus-questions">
-    <!-- Вопросы будут добавлены через JavaScript -->
-  </div>
-  
-  <div class="nav-buttons">
-    <button onclick="next('screen-lazarus','screen-pkgd')">Далее →</button>
-  </div>
-  
-  <div class="progress-container">
-    <div class="progress-bar" id="progress-bar-lazarus"></div>
-    <div class="progress-text">72%</div>
-  </div>
-</div>
+        // === СОСТОЯНИЕ ===
+        const state = {
+            currentPage: 1,
+            answers: {
+                demographic: {},
+                hardiness: new Array(45).fill(null),
+                perma: new Array(23).fill(null),
+                gse: new Array(10).fill(null),
+                emin: new Array(46).fill(null)
+            }
+        };
 
-<!-- 6. ПКГД -->
-<div class="screen" id="screen-pkgd">
-  <h2>Психологическая готовность к беременности</h2>
-  
-  <div class="instruction">
-    <p><strong>Инструкция:</strong> Просим вас из пяти утверждений, представленных в блоках, 
-    выбрать одно, наиболее полно отражающее ваше состояние.</p>
-  </div>
-  
-  <div class="question-counter">Блок <span id="pkgd-current">1</span> из 9</div>
-  
-  <!-- Блоки ПКГД из вашего файла -->
-  <div id="pkgd-questions">
-    <!-- Блоки будут добавлены через JavaScript -->
-  </div>
-  
-  <div class="nav-buttons">
-    <button onclick="submitAllData()">Завершить и отправить данные →</button>
-  </div>
-  
-  <div class="progress-container">
-    <div class="progress-bar" id="progress-bar-pkgd"></div>
-    <div class="progress-text">86%</div>
-  </div>
-</div>
-
-<!-- 7. Завершение -->
-<div class="screen" id="screen-finish">
-  <div class="loading" id="loading">
-    <div class="spinner"></div>
-    <h3>Отправка данных...</h3>
-    <p>Пожалуйста, не закрывайте страницу</p>
-  </div>
-  
-  <div id="success-message" style="display: none;">
-    <h2 style="color: var(--peach-accent);">✅ Спасибо за участие!</h2>
-    <div class="message success">
-      <p>Ваши ответы успешно сохранены.</p>
-      <p>Данные будут использованы только в обобщённом виде для научного исследования.</p>
-    </div>
-    
-    <div style="background: var(--peach-light); padding: 20px; border-radius: 15px; margin: 30px 0;">
-      <h4>Важно❗️</h4>
-      <ul style="margin: 15px 0 15px 20px;">
-        <li>Если у вас есть вопросы, свяжитесь с со мной ТГ - @lulerochka</li>
-        <li>Благодарю за ваш вклад в науку!</li>
-      </ul>
-      </div>
-    </div>
-  
-  <div id="error-message" style="display: none;">
-    <h2 style="color: #F44336;">⚠️ Ошибка отправки</h2>
-    <div class="message error">
-      <p>Произошла ошибка при отправке данных.</p>
-      <p>Пожалуйста, попробуйте еще раз или свяжитесь с со мной.</p>
-    </div>
-    <button onclick="submitAllData()">Попробовать снова</button>
-  </div>
-  
-  <div class="progress-container">
-    <div class="progress-bar" style="width: 100%;"></div>
-    <div class="progress-text">100%</div>
-  </div>
-</div>
-
-<script>
-// ========== КОНФИГУРАЦИЯ ==========
-const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSe0sozn9RHWrYtqFSaiWfF1fhx1wfRMqVxwkZJH21dWcgovyg/formResponse';
-const FIELD_IDS = 'entry.2134456026';'entry.300457556';'entry.1439011840';'entry.862194608'; 'entry.1991637437';'entry.2016809335';'entry.1515712681';'entry.552834598';'entry.171709964';'entry.114096340';
-  
-// ========== ДАННЫЕ ВОПРОСОВ ==========
-
-// 1. СТАИ вопросы (из вашего файла)
-const staiQuestions = [
-  "Я спокоен",
-  "Мне ничто не угрожает",
-  "Я нахожусь в напряжении",
-  "Я внутренне скован",
-  "Я чувствую себя свободно",
-  "Я расстроен",
-  "Меня волнуют возможные неудачи",
-  "Я ощущаю душевный покой",
-  "Я встревожен",
-  "Я испытываю чувство внутреннего удовлетворения",
-  "Я уверен в себе",
-  "Я нервничаю",
-  "Я не нахожу себе места",
-  "Я взвинчен",
-  "Я не чувствую скованности, напряжения",
-  "Я доволен",
-  "Я озабочен",
-  "Я слишком возбужден и мне не по себе",
-  "Мне радостно",
-  "Мне приятно",
-  "У меня бывает приподнятое настроение",
-  "Я бываю раздражительным",
-  "Я легко расстраиваюсь",
-  "Я хотел бы быть таким же удачливым, как и другие",
-  "Я сильно переживаю неприятности и долго не могу о них забыть",
-  "Я чувствую прилив сил и желание работать",
-  "Я спокоен, хладнокровен и собран",
-  "Меня тревожат возможные трудности",
-  "Я слишком переживаю из-за пустяков",
-  "Я бываю вполне счастлив",
-  "Я все принимаю близко к сердцу",
-  "Мне не хватает уверенности в себе",
-  "Я чувствую себя беззащитным",
-  "Я стараюсь избегать критических ситуаций и трудностей",
-  "У меня бывает хандра",
-  "Я бываю доволен",
-  "Всякие пустяки отвлекают и волнуют меня",
-  "Бывает, что я чувствую себя неудачником",
-  "Я уравновешенный человек",
-  "Меня охватывает беспокойство, когда я думаю о своих делах и заботах"
-];
-
-// 2. CERQ вопросы (из вашего файла)
-const cerqQuestions = [
-  "Я чувствую, что в происходящем следует винить себя",
-  "Я думаю, что мне придется принять то, что это произошло",
-  "Я часто думаю о том, что чувствую по поводу произошедшего",
-  "Я думаю о более приятных вещах, чем то, что произошло",
-  "Я думаю о том, что лучше всего сделать в этой ситуации",
-  "Я думаю, что эта ситуация может меня чему-то научить",
-  "Я думаю, что все могло бы быть гораздо хуже",
-  "Я постоянно думаю, что случившееся со мной — это катастрофа",
-  "Я чувствую, что в произошедшем следует винить других",
-  "Я думаю, что сам виноват в том, что произошло",
-  "Я думаю, что должен смириться с произошедшим",
-  "Я снова и снова возвращаюсь мыслями к произошедшему",
-  "Я думаю о приятных вещах, которые не имеют отношения к ситуации",
-  "Я думаю о том, как справиться с ситуацией",
-  "Я думаю, что могу стать сильнее благодаря этому",
-  "Я думаю, что другим людям бывает гораздо хуже",
-  "Я думаю, что это худшее, что могло со мной случиться",
-  "Я думаю, что другие виноваты в том, что произошло",
-  "Я корю себя за то, что это произошло",
-  "Я думаю, что должен научиться жить с этим",
-  "Я постоянно думаю о том, как мне плохо из-за случившегося",
-  "Я думаю о приятных вещах, которые произошли со мной раньше",
-  "Я думаю о конкретных шагах, которые нужно предпринять",
-  "Я думаю, что в будущем из этого может выйти что-то хорошее",
-  "Я думаю, что по сравнению с этим другие проблемы не так уж важны",
-  "Я постоянно думаю, что ситуация ужасна",
-  "Я думаю, что другие плохо со мной поступили",
-  "Я думаю, что сам допустил ошибку",
-  "Я думаю, что должен научиться принимать происходящее",
-  "Я снова и снова прокручиваю произошедшее в голове",
-  "Я стараюсь думать о приятных вещах",
-  "Я думаю, что могу что-то предпринять, чтобы улучшить ситуацию",
-  "Я думаю, что в итоге из этого можно извлечь пользу",
-  "Я думаю, что по сравнению с этим другие проблемы незначительны",
-  "Я постоянно думаю, что это худшее, что могло случиться",
-  "Я думаю, что другие ответственны за то, что произошло"
-];
-
-// 3. ССП Лазаруса вопросы (из вашего файла)
-const lazarQuestions = [
-  "сосредотачивался на том, что мне нужно было делать дальше - на следующем шаге",
-  "начинал что-то делать, зная, что это все равно не будет работать, главное - делать хоть что-нибудь",
-  "пытался склонить вышестоящих к тому, чтобы они изменили свое мнение",
-  "говорил с другими, чтобы больше узнать о ситуации",
-  "критиковал и укорял себя",
-  "пытался не сжигать за собой мосты, оставляя все, как оно есть",
-  "надеялся на чудо",
-  "смирялся с судьбой: бывает, что мне не везет",
-  "вел себя, как будто ничего не произошло",
-  "старался не показывать своих чувств",
-  "пытался увидеть в ситуации что-то положительное",
-  "спал больше обычного",
-  "срывал свою досаду на тех, кто навлек на меня проблемы",
-  "искал сочувствия и понимания у кого-нибудь",
-  "во мне возникла потребность выразить себя творчески",
-  "пытался забыть все это",
-  "обращался за помощью к специалистам",
-  "менялся или рос как личность в положительную сторону",
-  "извинялся или старался все загладить",
-  "составлял план действий",
-  "старался дать какой-то выход своим чувствам",
-  "понимал, что сам вызвал эту проблему",
-  "набирался опыта в этой ситуации",
-  "говорил с кем-либо, кто мог конкретно помочь в этой ситуации",
-  "пытался улучшить свое самочувствие едой, выпивкой, курением или лекарствами",
-  "рисковал напропалую",
-  "старался действовать не слишком поспешно, доверяясь первому порыву",
-  "находил новую веру во что-то",
-  "вновь открывал для себя что-то важное",
-  "что-то менял так, что все улаживалось",
-  "в целом избегал общения с людьми",
-  "не допускал это до себя, стараясь об этом особенно не задумываться",
-  "спрашивал совета у родственника или друга, которых уважал",
-  "старался, чтобы другие не узнали, как плохо обстоят дела",
-  "отказывался воспринимать это слишком серьезно",
-  "говорил о том, что я чувствую",
-  "стоял на своем и боролся за то, чего хотел",
-  "вымещал это на других людях",
-  "пользовался прошлым опытом - мне приходилось уже попадать в такие ситуации",
-  "знал, что надо делать и удваивал свои усилия, чтобы все наладить",
-  "отказывался верить, что это действительно произошло",
-  "я давал обещание, что в следующий раз все будет по-другому",
-  "находил пару других способов решения проблемы",
-  "старался, что мои эмоции не слишком мешали мне в других делах",
-  "что-то менял в себе",
-  "хотел, чтобы все это скорее как-то образовалось или кончилось",
-  "представлял себе, фантазировал, как все это могло бы обернуться",
-  "молился",
-  "прокручивал в уме, что мне сказать или сделать",
-  "думал о том, как бы в данной ситуации действовал человек, которым я восхищаюсь и старался подражать ему"
-];
-
-// 4. ПКГД блоки (из вашего файла)
-const pkgdBlocks = [
-  {
-    title: "А I",
-    options: [
-      "Ничто не доставляет мне такого счастья, как сознание того, что я беременна",
-      "Я не испытываю никаких особых эмоций, связанных с тем, что я беременна",
-      "С тех пор, как я узнала, что беременна, я нахожусь в нервном напряжении",
-      "В основном мне приятно сознавать, что я беременна",
-      "Я очень расстроена тем, что беременна"
-    ]
-  },
-  {
-    title: "А II",
-    options: [
-      "Беременность заставила меня полностью изменить образ жизни",
-      "Беременность не заставила меня существенно изменить образ жизни, но я стала кое в чем себя ограничивать",
-      "Беременность я не считаю поводом для того, чтобы менять образ жизни",
-      "Беременность так изменила образ моей жизни, что она стала прекрасной",
-      "Беременность заставила меня отказаться от многих планов, теперь не суждено сбыться многим моим надеждам"
-    ]
-  },
-  {
-    title: "А III",
-    options: [
-      "Я стараюсь вообще не думать ни о беременности, ни о предстоящих родах",
-      "Я постоянно думаю о родах, очень их боюсь",
-      "Я думаю, что во время родов все смогу сделать правильно, и не испытываю особого страха перед ними",
-      "Когда я задумываюсь о предстоящих родах, настроение у меня ухудшается, так как я почти не сомневаюсь в их плохом исходе",
-      "Я думаю о родах как о предстоящем празднике"
-    ]
-  },
-  {
-    title: "Б I",
-    options: [
-      "Я сомневаюсь в том, что смогу справляться с обязанностями матери",
-      "Я считаю, что не смогу стать хорошей матерью",
-      "Я не задумываюсь о предстоящем материнстве",
-      "Я уверена, что стану прекрасной матерью",
-      "Я полагаю, что если постараюсь, то смогу стать хорошей матерью"
-    ]
-  },
-  {
-    title: "Б II",
-    options: [
-      "Я часто с удовольствием представляю себе ребенка, которого вынашиваю, разговариваю с ним",
-      "Я понимаю ребенка, которого вынашиваю, восхищаюсь им и считаю, что он знает и понимает все, о чем я думаю",
-      "Я постоянно беспокоюсь о состоянии здоровья ребенка, которого вынашиваю, стараюсь его почувствовать",
-      "Я не думаю о том, каким будет ребенок, которого вынашиваю",
-      "Я часто думаю о том, что ребенок, которого вынашиваю, будет каким-нибудь неполноценным, и очень боюсь этого"
-    ]
-  },
-  {
-    title: "Б III",
-    options: [
-      "Я не думаю о том, как буду кормить ребенка грудью",
-      "Я с восторгом представляю себе, как буду кормить ребенка грудью",
-      "Я думаю, что буду кормить ребенка грудью",
-      "Я беспокоюсь о том, что у меня будут проблемы с кормлением грудью",
-      "Я почти уверена, что вряд ли смогу кормить ребенка грудью"
-    ]
-  },
-  {
-    title: "В I",
-    options: [
-      "Считаю, что беременность сделала меня еще прекрасней в глазах отца моего ребенка",
-      "Моя беременность никак не изменила отношения ко мне отца моего ребенка",
-      "Из-за беременности отец моего ребенка стал внимательнее и теплее относиться ко мне",
-      "Из-за беременности я стала некрасивой, и отец моего ребенка стал холоднее относиться ко мне",
-      "Боюсь, что изменения, связанные с беременностью, могут ухудшить отношение ко мне отца моего ребенка"
-    ]
-  },
-  {
-    title: "В II",
-    options: [
-      "Большинство близких мне людей разделяют мою радость по поводу беременности, и мне хорошо с ними",
-      "Не все близкие мне люди достаточно рады тому, что я беременна, не все понимают, что я теперь нуждаюсь в особом отношении",
-      "Большинство близких мне людей не одобряют то, что я беременна, мои отношения с ними ухудшились",
-      "Меня мало интересует отношение к моей беременности даже близких мне людей",
-      "Некоторые близкие мне люди относятся к моей беременности неоднозначно, и это меня тревожит"
-    ]
-  },
-  {
-    title: "В III",
-    options: [
-      "Мне всегда мучительно стыдно, когда окружающие замечают, что я «в положении»",
-      "Мне немного не по себе, когда окружающие замечают, что я «в положении»",
-      "Мне приятно, когда окружающие замечают, что я «в положении»",
-      "Мне наплевать, замечают окружающие или нет, что я «в положении»",
-      "Я не испытываю особой неловкости, если окружающие замечают, что я «в положении»"
-    ]
-  }
-];
-
-// ========== ТАБЛИЦЫ Т-БАЛЛОВ (такие же как в предыдущем коде) ==========
-const tScoreTables = {
-  women: {
-    confrontation: {
-      до20: [16,20,24,28,32,36,39,43,47,51,55,59,63,67,71,75,78,82,86],
-      2130: [17,21,24,28,32,35,39,43,46,50,54,58,61,65,68,72,76,79,83],
-      3145: [15,19,23,27,31,36,40,44,48,52,56,60,64,68,72,76,80,84,89],
-      4660: [14,18,22,26,30,34,38,42,46,50,53,57,61,65,69,73,77,81,85]
-    },
-    // ... остальные таблицы такие же как в предыдущем коде
-    // Для краткости оставляю только одну, в полном коде будут все
-  }
-};
-
-// ========== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ==========
-let allData = {};
-let currentAnswers = {}; // Для отслеживания выбранных ответов
-
-// ========== ИНИЦИАЛИЗАЦИЯ ==========
-document.addEventListener('DOMContentLoaded', function() {
-  // Добавляем вопросы СТАИ
-  const staiContainer = document.getElementById('stai-questions');
-  staiQuestions.forEach((question, index) => {
-    const div = document.createElement('div');
-    div.className = 'question';
-    div.innerHTML = `
-      <strong>${index + 1}. ${question}</strong><br>
-      <label><input type="radio" name="q${index + 1}" value="1" required> Никогда</label>
-      <label><input type="radio" name="q${index + 1}" value="2"> Почти никогда</label>
-      <label><input type="radio" name="q${index + 1}" value="3"> Часто</label>
-      <label><input type="radio" name="q${index + 1}" value="4"> Почти всегда</label>
-      <div class="answer-indicator">✓ Ответ выбран</div>
-    `;
-    staiContainer.appendChild(div);
-  });
-  
-  // Добавляем вопросы CERQ
-  const cerqContainer = document.getElementById('cerq-questions');
-  cerqQuestions.forEach((question, index) => {
-    const div = document.createElement('div');
-    div.className = 'question';
-    div.innerHTML = `
-      <strong>${index + 1}. ${question}</strong><br>
-      <label><input type="radio" name="c${index + 1}" value="1" required> Почти никогда</label>
-      <label><input type="radio" name="c${index + 1}" value="2"> Иногда</label>
-      <label><input type="radio" name="c${index + 1}" value="3"> Регулярно</label>
-      <label><input type="radio" name="c${index + 1}" value="4"> Часто</label>
-      <label><input type="radio" name="c${index + 1}" value="5"> Почти всегда</label>
-      <div class="answer-indicator">✓ Ответ выбран</div>
-    `;
-    cerqContainer.appendChild(div);
-  });
-  
-  // Добавляем вопросы ССП Лазаруса
-  const lazarContainer = document.getElementById('lazarus-questions');
-  lazarQuestions.forEach((question, index) => {
-    const div = document.createElement('div');
-    div.className = 'question';
-    div.innerHTML = `
-      <strong>${index + 1}. Оказавшись в трудной ситуации, я ${question}</strong><br>
-      <label><input type="radio" name="l${index + 1}" value="0" required> Никогда</label>
-      <label><input type="radio" name="l${index + 1}" value="1"> Редко</label>
-      <label><input type="radio" name="l${index + 1}" value="2"> Иногда</label>
-      <label><input type="radio" name="l${index + 1}" value="3"> Часто</label>
-      <div class="answer-indicator">✓ Ответ выбран</div>
-    `;
-    lazarContainer.appendChild(div);
-  });
-  
-  // Добавляем блоки ПКГД
-  const pkgdContainer = document.getElementById('pkgd-questions');
-  pkgdBlocks.forEach((block, blockIndex) => {
-    const blockDiv = document.createElement('div');
-    blockDiv.className = 'pkgd-block';
-    blockDiv.innerHTML = `<h4>${block.title}</h4>`;
-    
-    block.options.forEach((option, optionIndex) => {
-      const optionDiv = document.createElement('div');
-      optionDiv.className = 'pkgd-option';
-      optionDiv.innerHTML = `
-        <label>
-          <input type="radio" name="p${blockIndex + 1}" value="${optionIndex + 1}" required>
-          ${option}
-        </label>
-      `;
-      blockDiv.appendChild(optionDiv);
-    });
-    
-    pkgdContainer.appendChild(blockDiv);
-  });
-  
-  // Добавляем обработчики для отслеживания выбора
-  setupAnswerTracking();
-  
-  // Восстанавливаем сохраненные ответы
-  restoreAnswers();
-});
-
-// ========== ОТСЛЕЖИВАНИЕ ВЫБОРА ОТВЕТОВ ==========
-function setupAnswerTracking() {
-  // Отслеживаем выбор радиокнопок
-  document.addEventListener('change', function(e) {
-    if (e.target.type === 'radio') {
-      // Показываем индикатор выбора
-      const questionDiv = e.target.closest('.question');
-      if (questionDiv) {
-        questionDiv.classList.add('answered');
-        
-        // Сохраняем выбор
-        const questionName = e.target.name;
-        const questionValue = e.target.value;
-        currentAnswers[questionName] = questionValue;
-        
-        // Обновляем счетчик
-        updateQuestionCounters();
-      }
-      
-      // Для блоков ПКГД
-      const pkgdOption = e.target.closest('.pkgd-option');
-      if (pkgdOption) {
-        // Убираем выделение у других вариантов в этом блоке
-        const block = pkgdOption.closest('.pkgd-block');
-        block.querySelectorAll('.pkgd-option').forEach(opt => {
-          opt.style.borderLeftColor = 'var(--peach-medium)';
+        // === ИНИЦИАЛИЗАЦИЯ ===
+        document.addEventListener('DOMContentLoaded', function() {
+            initHardinessTest();
+            initPermaTest();
+            initGseTest();
+            initEminTest();
+            setupEventListeners();
+            initVisualEffects();
+            showPage(1);
         });
-        
-        // Выделяем выбранный вариант
-        pkgdOption.style.borderLeftColor = 'var(--peach-accent)';
-      }
-    }
-  });
-  
-  // Отслеживаем ввод в текстовые поля
-  document.addEventListener('input', function(e) {
-    if (e.target.type === 'text' || e.target.type === 'number') {
-      const questionDiv = e.target.closest('.question');
-      if (questionDiv && e.target.value.trim() !== '') {
-        questionDiv.classList.add('answered');
-      }
-    }
-  });
-}
 
-// ========== ОБНОВЛЕНИЕ СЧЕТЧИКОВ ==========
-function updateQuestionCounters() {
-  // СТАИ
-  const staiAnswered = document.querySelectorAll('#screen-stai .question.answered').length;
-  document.getElementById('stai-current').textContent = staiAnswered;
-  
-  // CERQ
-  const cerqAnswered = document.querySelectorAll('#screen-cerq .question.answered').length;
-  document.getElementById('cerq-current').textContent = cerqAnswered;
-  
-  // ССП
-  const lazarusAnswered = document.querySelectorAll('#screen-lazarus .question.answered').length;
-  document.getElementById('lazarus-current').textContent = lazarusAnswered;
-  
-  // ПКГД
-  const pkgdAnswered = document.querySelectorAll('#screen-pkgd .pkgd-option input:checked').length;
-  document.getElementById('pkgd-current').textContent = pkgdAnswered;
-}
-
-// ========== НАВИГАЦИЯ ==========
-function startSurvey() {
-  if (!document.getElementById('consent').checked) {
-    alert("Пожалуйста, дайте согласие на участие в исследовании");
-    return;
-  }
-  next('screen-consent', 'screen-demography');
-}
-
-function next(current, nextScreen) {
-  // Проверяем заполнение
-  if (!validateScreen(current)) {
-    return;
-  }
-  
-  // Сохраняем данные
-  saveScreenData(current);
-  
-  // Переключаем экраны
-  document.getElementById(current).classList.remove('active');
-  document.getElementById(nextScreen).classList.add('active');
-  
-  // Обновляем прогресс
-  updateProgress();
-  updateQuestionCounters();
-  
-  // Прокрутка наверх
-  window.scrollTo(0, 0);
-}
-
-function prev(current, prevScreen) {
-  document.getElementById(current).classList.remove('active');
-  document.getElementById(prevScreen).classList.add('active');
-  updateProgress();
-  window.scrollTo(0, 0);
-}
-
-// ========== ВАЛИДАЦИЯ ==========
-function validateScreen(screenId) {
-  const screen = document.getElementById(screenId);
-  const requiredInputs = screen.querySelectorAll('[required]');
-  let isValid = true;
-  let firstInvalid = null;
-  
-  requiredInputs.forEach(input => {
-    if (input.type === 'radio') {
-      const name = input.name;
-      const checked = screen.querySelector(`input[name="${name}"]:checked`);
-      if (!checked) {
-        isValid = false;
-        if (!firstInvalid) {
-          firstInvalid = input.closest('.question') || input.closest('.pkgd-block');
+        // === ИНИЦИАЛИЗАЦИЯ ТЕСТОВ ===
+        function initHardinessTest() {
+            const form = document.getElementById('hardiness-form');
+            form.innerHTML = '';
+            config.questions.hardiness.forEach((question, index) => {
+                const isReverse = config.reverseQuestions.hardiness.includes(index);
+                const questionDiv = createQuestion(index + 1, question, 'hardiness', isReverse);
+                form.appendChild(questionDiv);
+            });
         }
-      }
-    } else if (input.type === 'checkbox') {
-      if (!input.checked) {
-        isValid = false;
-        if (!firstInvalid) firstInvalid = input;
-      }
-    } else {
-      if (!input.value.trim()) {
-        isValid = false;
-        if (!firstInvalid) firstInvalid = input;
-      }
-    }
-  });
-  
-  if (!isValid) {
-    alert("Пожалуйста, заполните все обязательные поля");
-    if (firstInvalid) {
-      firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      // Анимация внимания
-      firstInvalid.style.animation = 'none';
-      setTimeout(() => {
-        firstInvalid.style.animation = 'shake 0.5s';
-      }, 10);
-    }
-    return false;
-  }
-  
-  return true;
-}
 
-// ========== СОХРАНЕНИЕ И ВОССТАНОВЛЕНИЕ ==========
-function saveScreenData(screenId) {
-  const screen = document.getElementById(screenId);
-  const inputs = screen.querySelectorAll('input, select, textarea');
-  
-  inputs.forEach(input => {
-    if (input.type === 'radio') {
-      if (input.checked) {
-        allData[input.name] = input.value;
-        localStorage.setItem(input.name, input.value);
-      }
-    } else if (input.type === 'checkbox') {
-      allData[input.name] = input.checked;
-      localStorage.setItem(input.name, input.checked);
-    } else {
-      allData[input.name] = input.value;
-      if (input.value) {
-        localStorage.setItem(input.name, input.value);
-      }
-    }
-  });
-}
-
-function restoreAnswers() {
-  // Восстанавливаем из localStorage
-  const inputs = document.querySelectorAll('input, select, textarea');
-  inputs.forEach(input => {
-    const saved = localStorage.getItem(input.name);
-    if (saved !== null) {
-      if (input.type === 'radio') {
-        if (input.value === saved) {
-          input.checked = true;
-          // Активируем индикатор
-          const questionDiv = input.closest('.question');
-          if (questionDiv) {
-            questionDiv.classList.add('answered');
-          }
+        function initPermaTest() {
+            const form = document.getElementById('perma-form');
+            form.innerHTML = '';
+            config.questions.perma.forEach((question, index) => {
+                const questionDiv = createPermaQuestion(index + 1, question);
+                form.appendChild(questionDiv);
+            });
         }
-      } else if (input.type === 'checkbox') {
-        input.checked = saved === 'true';
-      } else {
-        input.value = saved;
-        if (saved) {
-          const questionDiv = input.closest('.question');
-          if (questionDiv) {
-            questionDiv.classList.add('answered');
-          }
+
+        function initGseTest() {
+            const form = document.getElementById('gse-form');
+            form.innerHTML = '';
+            config.questions.gse.forEach((question, index) => {
+                const questionDiv = createQuestion(index + 1, question, 'gse', false);
+                form.appendChild(questionDiv);
+            });
         }
-      }
-      allData[input.name] = saved;
-    }
-  });
-  
-  updateQuestionCounters();
-}
 
-// ========== ПРОГРЕСС ==========
-function updateProgress() {
-  const screens = ['screen-consent', 'screen-demography', 'screen-stai', 'screen-cerq', 'screen-lazarus', 'screen-pkgd'];
-  const currentIndex = screens.findIndex(id => document.getElementById(id).classList.contains('active'));
-  
-  if (currentIndex >= 0) {
-    const progress = ((currentIndex + 1) / screens.length) * 100;
-    document.querySelectorAll('.progress-bar').forEach(bar => {
-      bar.style.width = `${progress}%`;
-    });
-    document.querySelectorAll('.progress-text').forEach(text => {
-      text.textContent = `${Math.round(progress)}%`;
-    });
+        function initEminTest() {
+            const form = document.getElementById('emin-form');
+            form.innerHTML = '';
+            config.questions.emin.forEach((question, index) => {
+                const isReverse = config.reverseQuestions.emin.includes(index);
+                const questionDiv = createQuestion(index + 1, question, 'emin', isReverse);
+                form.appendChild(questionDiv);
+            });
+        }
+
+        // === СОЗДАНИЕ ВОПРОСОВ ===
+        function createQuestion(number, text, type, isReverse = false) {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question';
+            questionDiv.dataset.type = type;
+            questionDiv.dataset.index = number - 1;
+            questionDiv.dataset.reverse = isReverse;
+            
+            const questionText = document.createElement('div');
+            questionText.className = 'question-text';
+            
+            const numberSpan = document.createElement('span');
+            numberSpan.className = 'question-number';
+            numberSpan.textContent = number;
+            
+            const textSpan = document.createElement('span');
+            textSpan.className = 'required';
+            textSpan.textContent = text;
+            
+            questionText.appendChild(numberSpan);
+            questionText.appendChild(textSpan);
+            
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = 'options-container';
+            
+            let options, values;
+            switch(type) {
+                case 'hardiness':
+                    options = ["Нет", "Скорее нет", "Скорее да", "Да"];
+                    values = isReverse ? [3,2,1,0] : [0,1,2,3];
+                    break;
+                case 'gse':
+                    options = ["Абсолютно неверно", "Едва ли это верно", "Скорее всего верно", "Совершенно верно"];
+                    values = [1,2,3,4];
+                    break;
+                case 'emin':
+                    options = ["Совсем не согласен", "Скорее не согласен", "Скорее согласен", "Полностью согласен"];
+                    values = isReverse ? [4,3,2,1] : [1,2,3,4];
+                    break;
+            }
+            
+            options.forEach((option, idx) => {
+                const optionLabel = document.createElement('label');
+                optionLabel.className = 'option';
+                
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = `${type}-${number-1}`;
+                input.value = values[idx];
+                input.required = true;
+                
+                const optionText = document.createTextNode(option);
+                
+                optionLabel.appendChild(input);
+                optionLabel.appendChild(optionText);
+                
+                input.addEventListener('change', function() {
+                    state.answers[type][number-1] = parseInt(this.value);
+                });
+                
+                optionsContainer.appendChild(optionLabel);
+            });
+            
+            questionDiv.appendChild(questionText);
+            questionDiv.appendChild(optionsContainer);
+            return questionDiv;
+        }
+
+        function createPermaQuestion(number, text) {
+    const questionDiv = document.createElement('div');
+    questionDiv.className = 'question';
+    questionDiv.dataset.type = 'perma';
+    questionDiv.dataset.index = number - 1;
     
-    // Обновляем статус
-    document.querySelectorAll('.status-item').forEach((item, index) => {
-      if (index <= currentIndex) {
-        item.classList.add('completed');
-      } else {
-        item.classList.remove('completed');
-      }
-    });
-  }
-}
-
-// === СТАИ: ПРАВИЛЬНЫЙ ПОДСЧЕТ ===
-function calculateStaiState() {
-  // Ключ: для СИТУАТИВНОЙ тревожности (вопросы 1-20)
-  // 1,2,5,8,10,11,15,16,19,20 - ОБРАТНЫЕ (4,3,2,1)
-  // остальные - ПРЯМЫЕ (1,2,3,4)
-  
-  const reverseQuestionsST = [1,2,5,8,10,11,15,16,19,20];
-  let sum = 0;
-  
-  for (let i = 1; i <= 20; i++) {
-    const answer = parseInt(allData['q' + i]) || 1; // 1-4
-    if (reverseQuestionsST.includes(i)) {
-      // Обратные: 4→1, 3→2, 2→3, 1→4
-      sum += (5 - answer);
-    } else {
-      // Прямые: как есть
-      sum += answer;
-    }
-  }
-  return sum; // 20-80 баллов
-}
-
-function calculateStaiTrait() {
-  // Ключ: для ЛИЧНОСТНОЙ тревожности (вопросы 21-40)
-  // 21,26,27,30,33,36,39 - ОБРАТНЫЕ (4,3,2,1)
-  // остальные - ПРЯМЫЕ (1,2,3,4)
-  
-  const reverseQuestionsLT = [21,26,27,30,33,36,39];
-  let sum = 0;
-  
-  for (let i = 21; i <= 40; i++) {
-    const answer = parseInt(allData['q' + i]) || 1;
-    if (reverseQuestionsLT.includes(i)) {
-      sum += (5 - answer);
-    } else {
-      sum += answer;
-    }
-  }
-  return sum; // 20-80 баллов
-}
-
-// === CERQ: 9 ШКАЛ (по 4 вопроса каждая) ===
-function calculateCerqScores() {
-  const scales = {
-    self_blame: [1,10,19,28],
-    acceptance: [2,11,20,29],
-    rumination: [3,12,21,30],
-    positive_refocus: [4,13,22,31],
-    refocus_plan: [5,14,23,32],
-    positive_reappraisal: [6,15,24,33],
-    putting_perspective: [7,16,25,34],
-    catastrophizing: [8,17,26,35],
-    blaming_others: [9,18,27,36]
-  };
-  
-  const scores = {};
-  for (const [scaleName, questions] of Object.entries(scales)) {
-    scores[scaleName] = questions.reduce((sum, q) => {
-      return sum + (parseInt(allData['c' + q]) || 1);
-    }, 0);
-  }
-  return scores;
-}
-
-// === ССП ЛАЗАРУСА: 8 ШКАЛ ===
-function calculateLazarusScores() {
-  const scales = {
-    confrontive: [2,3,13,21,26,37],          // Конфронтационный копинг
-    distancing: [8,9,11,16,32,35],           // Дистанцирование
-    self_control: [6,10,27,34,44,49,50],     // Самоконтроль
-    seeking_social: [4,14,17,24,33,36],      // Поиск социальной поддержки
-    accepting_resp: [5,19,22,42],            // Принятие ответственности
-    escape_avoid: [7,12,25,31,38,41,46,47],  // Бегство-избегание
-    planful: [1,20,30,39,40,43],             // Планирование решения
-    positive_reappraisal: [15,18,23,28,29,45,48] // Положительная переоценка
-  };
-  
-  const scores = {};
-  for (const [scaleName, questions] of Object.entries(scales)) {
-    scores[scaleName] = questions.reduce((sum, q) => {
-      return sum + (parseInt(allData['l' + q]) || 0); // 0-3
-    }, 0);
-  }
-  return scores;
-}
-  
-  // === ПКГД (ТОБ): 5 ТИПОВ ГОТОВНОСТИ ===
-function calculatePkgdScores() {
-  // Ключ перевода выбранного варианта в тип
-  // Каждый блок (A-I, A-II, ...) имеет свой ключ
-  const typeKeys = {
-    // Блок: [О, Г, Э, Т, Д] для вариантов 1-5
-    'p1': [4,2,1,3,5],  // A-I
-    'p2': [2,3,4,1,5],  // A-II
-    'p3': [3,1,5,2,4],  // A-III
-    'p4': [5,3,4,1,2],  // Б-I
-    'p5': [1,4,2,3,5],  // Б-II
-    'p6': [3,1,2,5,4],  // Б-III
-    'p7': [3,2,1,5,4],  // В-I
-    'p8': [1,4,2,5,3],  // В-II
-    'p9': [5,4,3,2,1]   // В-III
-  };
-  
-  const typeSums = { О: 0, Г: 0, Э: 0, Т: 0, Д: 0 };
-  
-  // Подсчитываем баллы по типам
-  for (let i = 1; i <= 9; i++) {
-    const answer = parseInt(allData['p' + i]) || 1; // 1-5
-    const key = typeKeys['p' + i];
+    const questionText = document.createElement('div');
+    questionText.className = 'question-text';
     
-    if (key && answer >= 1 && answer <= 5) {
-      // answer=1 → key[0], answer=2 → key[1], ...
-      const typeIndex = ['О', 'Г', 'Э', 'Т', 'Д'][key[answer-1]-1];
-      typeSums[typeIndex]++;
-    }
-  }
-  
-  return {
-    О: typeSums.О,  // Оптимальный тип
-    Г: typeSums.Г,  // Гипогестогнозический
-    Э: typeSums.Э,  // Эйфорический
-    Т: typeSums.Т,  // Тревожный
-    Д: typeSums.Д,  // Депрессивный
-    total: Object.values(typeSums).reduce((a, b) => a + b, 0) // 9 всегда
-  };
-}
-
-async function submitAllData() {
-  try {
-    saveScreenData('screen-pkgd');
+    const numberSpan = document.createElement('span');
+    numberSpan.className = 'question-number';
+    numberSpan.textContent = number;
     
-    // === 1. СБОР ВСЕХ ДАННЫХ ===
+    const textSpan = document.createElement('span');
+    textSpan.className = 'required';
+    textSpan.textContent = text;
     
-    // Демография
-    const demographics = {
-      code: allData.code || '',
-      age: allData.age || '',
-      city: allData.city || '',
-      group_abort: allData.group_abort || '',
-      pregnancies: allData.pregnancies || '',
-      miscarriages: allData.miscarriages || '',
-      children: allData.children || '',
-      months_after_abort: allData.months_after_abort || '',
-      planning: allData.planning || '',
-      therapy: allData.therapy || '',
-      meds: allData.meds || '',
-      education: allData.education || ''
+    questionText.appendChild(numberSpan);
+    questionText.appendChild(textSpan);
+    
+    // Создаем красивую линейку PERMA
+    const permaScale = document.createElement('div');
+    permaScale.className = 'perma-scale';
+    
+    // Метки шкалы (левая и правая)
+    const scaleLabels = document.createElement('div');
+    scaleLabels.className = 'scale-labels';
+    
+    // Определяем метки в зависимости от номера вопроса
+    let leftLabel = "0";
+    let rightLabel = "10";
+    
+    // Специальные метки для некоторых вопросов PERMA
+    const permaLabels = {
+        1: ["0 — никогда", "10 — всегда"],
+        2: ["0 — никогда", "10 — всегда"],
+        3: ["0 — никогда", "10 — всегда"],
+        4: ["0 — никогда", "10 — всегда"],
+        5: ["0 — никогда", "10 — всегда"],
+        6: ["0 — ужасно", "10 — великолепно"],
+        7: ["0 — совсем нет", "10 — максимальное значение"],
+        8: ["0 — совсем нет", "10 — максимальное значение"],
+        9: ["0 — совсем нет", "10 — максимальное значение"],
+        10: ["0 — совсем нет", "10 — максимальное значение"],
+        11: ["0 — совсем нет", "10 — максимальное значение"],
+        12: ["0 — совсем нет", "10 — максимальное значение"],
+        13: ["0 — никогда", "10 — всегда"],
+        14: ["0 — никогда", "10 — всегда"],
+        15: ["0 — никогда", "10 — всегда"],
+        16: ["0 — никогда", "10 — всегда"],
+        17: ["0 — никогда", "10 — всегда"],
+        18: ["0 — ужасно", "10 — великолепно"],
+        19: ["0 — минимальное значение", "10 — максимальное значение"],
+        20: ["0 — совсем нет", "10 — максимальное значение"],
+        21: ["0 — совсем нет", "10 — максимальное значение"],
+        22: ["0 — совсем нет", "10 — максимальное значение"],
+        23: ["0 — совсем нет", "10 — максимальное значение"]
     };
     
-    // Функция сбора вопросов
-    function collectQuestions(prefix, start, end) {
-      const result = {};
-      for (let i = start; i <= end; i++) {
-        result[`${prefix}${i}`] = allData[`${prefix}${i}`] || '';
-      }
-      return result;
+    if (permaLabels[number]) {
+        leftLabel = permaLabels[number][0];
+        rightLabel = permaLabels[number][1];
     }
     
-    // Ответы по методикам
-    const staiAnswers = collectQuestions('q', 1, 40);
-    const cerqAnswers = collectQuestions('c', 1, 36);
-    const lazarAnswers = collectQuestions('l', 1, 50);
-    const pkgdAnswers = collectQuestions('p', 1, 9);
+    const leftLabelSpan = document.createElement('span');
+    leftLabelSpan.textContent = leftLabel;
     
-   // === 2. РАСЧЕТ БАЛЛОВ ПО КЛЮЧАМ ===
-
-// СТАИ баллы
-const staiScores = {
-  state: calculateStaiState(),
-  trait: calculateStaiTrait()
+    const rightLabelSpan = document.createElement('span');
+    rightLabelSpan.textContent = rightLabel;
+    
+    scaleLabels.appendChild(leftLabelSpan);
+    scaleLabels.appendChild(rightLabelSpan);
+    
+        // Цифры от 0 до 10
+    const scaleNumbers = document.createElement('div');
+    scaleNumbers.className = 'scale-numbers';
+    
+    for (let i = 0; i <= 10; i++) {
+        const scaleNumber = document.createElement('div');
+        scaleNumber.className = 'scale-number';
+        scaleNumber.textContent = i;
+        scaleNumber.dataset.value = i;
+        scaleNumbers.appendChild(scaleNumber);
+        
+        // Скрытый input
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = `perma-${number-1}`;
+        input.value = i;
+        input.id = `perma-${number-1}-${i}`;
+        input.style.display = 'none';
+        
+        // Обработчик выбора
+        const selectHandler = function() {
+            state.answers.perma[number-1] = i;
+            
+            // Сбрасываем все выделения в этом вопросе
+            questionDiv.querySelectorAll('.scale-number').forEach(num => {
+                num.classList.remove('selected');
+            });
+            
+            // Выделяем выбранное
+            scaleNumber.classList.add('selected');
+            input.checked = true;
+        };
+        
+        scaleNumber.addEventListener('click', selectHandler);
+        input.addEventListener('change', selectHandler);
+        
+        // Добавляем input в scaleNumber
+        scaleNumber.appendChild(input);
+    }
+    
+    permaScale.appendChild(scaleLabels);
+    permaScale.appendChild(scaleNumbers);
+    
+    questionDiv.appendChild(questionText);
+    questionDiv.appendChild(permaScale);
+    
+    return questionDiv;
 };
 
-// CERQ баллы (9 шкал)
-const cerqScores = calculateCerqScores();
+        // === ОБРАБОТЧИКИ ===
+        function setupEventListeners() {
+            document.getElementById('btn-next-1').addEventListener('click', () => {
+                if (!document.getElementById('consent-checkbox').checked) {
+                    document.getElementById('consent-error').style.display = 'block';
+                    return;
+                }
+                document.getElementById('consent-error').style.display = 'none';
+                showPage(2);
+            });
+            
+            document.getElementById('btn-next-2').addEventListener('click', () => {
+                if (validateDemographicForm()) {
+                    collectDemographicAnswers();
+                    showPage(3);
+                }
+            });
+            
+            document.getElementById('btn-next-3').addEventListener('click', () => {
+                if (validateForm('hardiness-form')) showPage(4);
+            });
+            
+            document.getElementById('btn-next-4').addEventListener('click', () => {
+                if (validateForm('perma-form')) showPage(5);
+            });
+            
+            document.getElementById('btn-next-5').addEventListener('click', () => {
+                if (validateForm('gse-form')) showPage(6);
+            });
+            
+            document.getElementById('btn-submit-all').addEventListener('click', () => {
+                if (validateForm('emin-form')) {
+                    submitToGoogleForms();
+                    showPage(7);
+                }
+            });
+        }
 
-// ССП Лазаруса баллы (8 шкал)
-const lazarScores = calculateLazarusScores();
+        function initVisualEffects() {
+            document.addEventListener('change', function(e) {
+                if (e.target.type === 'radio') {
+                    const parent = e.target.closest('.option');
+                    if (parent) {
+                        const name = e.target.name;
+                        document.querySelectorAll(`input[name="${name}"]`).forEach(radio => {
+                            radio.closest('.option')?.classList.remove('selected');
+                        });
+                        parent.classList.add('selected');
+                    }
+                }
+                if (e.target.type === 'checkbox') {
+                    const parent = e.target.closest('.option');
+                    if (parent) parent.classList.toggle('selected', e.target.checked);
+                }
+            });
+        }
 
-// ПКГД баллы (5 типов + итог)
-const pkgdScores = calculatePkgdScores();
-const pkgdScore = pkgdScores.total; // для 10-го поля
+        // === ВАЛИДАЦИЯ ===
+        function validateDemographicForm() {
+            let isValid = true;
+            const radioGroups = ['age', 'gender', 'country', 'location', 'experience', 'manager', 'coaching_edu', 'coaching_use'];
+           radioGroups.forEach(group => {
+    const radios = document.querySelectorAll(`input[name="${group}"]`);
+    if (radios.length > 0) {
+        let isChecked = false;
+        radios.forEach(radio => {
+            if (radio.checked) {
+                isChecked = true;
+                radio.closest('.question')?.classList.remove('has-error');
+            }
+        });
+        
+        if (!isChecked) {
+            isValid = false;
+            const question = radios[0]?.closest('.question');
+            if (question) question.classList.add('has-error');
+        }
+    }
+});
+            if (!document.querySelector('input[name="profession"]').value.trim()) {
+                isValid = false;
+                document.querySelector('input[name="profession"]').closest('.question').classList.add('has-error');
+            }
+            if (document.getElementById('country-other').checked && !document.getElementById('country-other-text').value.trim()) {
+                isValid = false;
+                document.getElementById('country-other-text').closest('.question').classList.add('has-error');
+            }
+            if (!isValid) alert('Пожалуйста, заполните все обязательные поля');
+            return isValid;
+        }
+
+        function validateForm(formId) {
+            const form = document.getElementById(formId);
+            let isValid = true;
+            form.querySelectorAll('[required]').forEach(input => {
+                const question = input.closest('.question');
+                if (question) question.classList.remove('has-error');
+                if (!input.value && !input.checked) {
+                    isValid = false;
+                    input.closest('.question')?.classList.add('has-error');
+                }
+            });
+            if (!isValid) alert('Пожалуйста, ответьте на все вопросы');
+            return isValid;
+        }
+
+        // === СБОР ДАННЫХ ===
+        function collectDemographicAnswers() {
+            const formData = new FormData(document.getElementById('demographic-form'));
+            state.answers.demographic.age = formData.get('age');
+            state.answers.demographic.gender = formData.get('gender');
+            state.answers.demographic.country = formData.get('country');
+            if (state.answers.demographic.country === 'Другая страна') {
+                state.answers.demographic.country_other = document.getElementById('country-other-text').value;
+            }
+            state.answers.demographic.location = formData.get('location');
+            state.answers.demographic.profession = formData.get('profession');
+            state.answers.demographic.experience = formData.get('experience');
+            state.answers.demographic.manager = formData.get('manager');
+            state.answers.demographic.coaching_edu = formData.get('coaching_edu');
+            state.answers.demographic.coaching_use = formData.get('coaching_use');
+            const coachingCheckboxes = document.querySelectorAll('input[name="coaching_format"]:checked');
+            state.answers.demographic.coaching_format = Array.from(coachingCheckboxes).map(cb => cb.value);
+            if (document.getElementById('coaching-other-checkbox')?.checked) {
+                state.answers.demographic.coaching_other = document.getElementById('coaching-other-text').value;
+            }
+        }
+
+        // === ОТПРАВКА В GOOGLE FORMS ===
+        function submitToGoogleForms() {
+            const googleForm = document.getElementById('google-form');
+            googleForm.innerHTML = '';
+            
+            // Анкетные данные (текст)
+            for (const [key, value] of Object.entries(state.answers.demographic)) {
+                if (Array.isArray(value)) {
+                    value.forEach(val => addHiddenField(googleForm, fieldIds[key], val));
+                } else if (value) {
+                    addHiddenField(googleForm, fieldIds[key], value);
+                }
+            }
+            
+            // Тестовые данные (числа)
+            state.answers.hardiness.forEach((value, index) => {
+                if (value !== null) addHiddenField(googleForm, fieldIds[`h${index+1}`], value);
+            });
+            state.answers.perma.forEach((value, index) => {
+                if (value !== null) addHiddenField(googleForm, fieldIds[`p${index+1}`], value);
+            });
+            state.answers.gse.forEach((value, index) => {
+                if (value !== null) addHiddenField(googleForm, fieldIds[`g${index+1}`], value);
+            });
+            const gseResult = calculateGSEresult();
+                if (gseResult) {
+                      addHiddenField(googleForm, fieldIds.gse_result, gseResult.fullText);
+                    }
+            state.answers.emin.forEach((value, index) => {
+                if (value !== null) addHiddenField(googleForm, fieldIds[`e${index+1}`], value);
+            });
+            
+            googleForm.submit();
+        }
+
+        function addHiddenField(form, name, value) {
+            if (!name || name.includes('123456789')) {
+                console.warn('Пропущено поле:', name, 'значение:', value);
+                return;
+            }
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = value;
+            form.appendChild(input);
+        }
+        // === РАСЧЕТ РЕЗУЛЬТАТА GSE ===
+function calculateGSEresult() {
+    const answers = state.answers.gse;
+    let sum = 0;
+    let unanswered = 0;
     
-    // === 3. ОТПРАВКА В 10 ПОЛЕЙ ===
-    
-    // ВАШИ ID ПОЛЕЙ
-    const FIELD_IDS = [
-      'entry.2134456026', // 1. Код участника
-      'entry.300457556',  // 2. Демография (JSON)
-      'entry.1439011840', // 3. СТАИ ответы (JSON)
-      'entry.862194608',  // 4. СТАИ баллы (JSON)
-      'entry.1991637437', // 5. CERQ ответы (JSON)
-      'entry.2016809335', // 6. CERQ баллы (JSON)
-      'entry.1515712681', // 7. ССП ответы (JSON)
-      'entry.552834598',  // 8. ССП баллы (JSON)
-      'entry.171709964',  // 9. ПКГД ответы (JSON)
-      'entry.114096340'   // 10. ПКГД балл (число)
-    ];
-    
-    const formData = new FormData();
-    
-    // Заполняем все 10 полей
-    formData.append(FIELD_IDS[0], demographics.code);
-    formData.append(FIELD_IDS[1], JSON.stringify(demographics, null, 2));
-    formData.append(FIELD_IDS[2], JSON.stringify(staiAnswers, null, 2));
-    formData.append(FIELD_IDS[3], JSON.stringify(staiScores, null, 2));
-    formData.append(FIELD_IDS[4], JSON.stringify(cerqAnswers, null, 2));
-    formData.append(FIELD_IDS[5], JSON.stringify(cerqScores, null, 2));
-    formData.append(FIELD_IDS[6], JSON.stringify(lazarAnswers, null, 2));
-    formData.append(FIELD_IDS[7], JSON.stringify(lazarScores, null, 2));
-    formData.append(FIELD_IDS[8], JSON.stringify(pkgdAnswers, null, 2));
-    formData.append(FIELD_IDS[9], pkgdScore.toString());
-    
-    // === 4. ОТПРАВКА ===
-    
-    document.getElementById('screen-pkgd').classList.remove('active');
-    document.getElementById('screen-finish').classList.add('active');
-    document.getElementById('loading').classList.add('active');
-    
-    await fetch(GOOGLE_FORM_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: formData
+    answers.forEach(answer => {
+        if (answer !== null) {
+            sum += answer;
+        } else {
+            unanswered++;
+        }
     });
     
-    setTimeout(() => {
-      document.getElementById('loading').classList.remove('active');
-      document.getElementById('success-message').style.display = 'block';
-      localStorage.clear();
-    }, 2000);
+    if (unanswered > 0) return null;
     
-  } catch (error) {
-    console.error('Ошибка:', error);
-    document.getElementById('loading').classList.remove('active');
-    document.getElementById('error-message').style.display = 'block';
-  }
+    let level = '';
+    if (sum >= 31) {
+        level = 'Высокий уровень (31–40 баллов)';
+    } else if (sum >= 21) {
+        level = 'Средний уровень (21–30 баллов)';
+    } else {
+        level = 'Низкий уровень (10–20 баллов)';
+    }
+    
+    return {
+        sum: sum,
+        level: level,
+        fullText: `${sum} баллов - ${level}`
+    };
 }
 
-// Добавляем анимацию тряски для валидации
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-    20%, 40%, 60%, 80% { transform: translateX(5px); }
-  }
-`;
-document.head.appendChild(style);
-</script>
+        // === НАВИГАЦИЯ ===
+        function showPage(pageNumber) {
+            for (let i = 1; i <= 7; i++) {
+                document.getElementById(`page-${i}`).classList.add('hidden');
+            }
+            document.getElementById(`page-${pageNumber}`).classList.remove('hidden');
+            state.currentPage = pageNumber;
+            updateProgressIndicator(pageNumber);
+            window.scrollTo(0, 0);
+        }
+
+        function updateProgressIndicator(currentPage) {
+            const indicator = document.getElementById('progress-indicator');
+            if (currentPage === 1) {
+                indicator.classList.add('hidden');
+            } else {
+                indicator.classList.remove('hidden');
+                document.querySelectorAll('.progress-step').forEach(step => {
+                    step.classList.remove('active');
+                    if (parseInt(step.dataset.step) < currentPage) {
+                        step.classList.add('active');
+                    }
+                });
+            }
+        }
+
+        // === ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ===
+        window.toggleInput = function(inputId, radioId) {
+            const inputContainer = document.getElementById(inputId);
+            const radio = document.getElementById(radioId);
+            inputContainer.style.display = radio.checked ? 'block' : 'none';
+            if (inputId === 'country-input') {
+                document.getElementById('country-other-text').required = radio.checked;
+                if (!radio.checked) document.getElementById('country-other-text').value = '';
+            }
+        };
+
+        window.toggleCoachingFormat = function() {
+            const coachingQuestion = document.getElementById('coaching-format-question');
+            const noCoachingRadio = document.getElementById('no-coaching');
+            coachingQuestion.style.display = noCoachingRadio.checked ? 'none' : 'block';
+            if (noCoachingRadio.checked) {
+                document.querySelectorAll('input[name="coaching_format"]').forEach(cb => {
+                    cb.checked = false;
+                    cb.closest('.option')?.classList.remove('selected');
+                });
+                document.getElementById('coaching-other-input').style.display = 'none';
+                document.getElementById('coaching-other-text').value = '';
+            }
+        };
+
+        window.toggleCoachingOther = function() {
+            const otherCheckbox = document.getElementById('coaching-other-checkbox');
+            const otherInput = document.getElementById('coaching-other-input');
+            otherInput.style.display = otherCheckbox.checked ? 'block' : 'none';
+            document.getElementById('coaching-other-text').required = otherCheckbox.checked;
+            if (!otherCheckbox.checked) document.getElementById('coaching-other-text').value = '';
+        };
+    </script>
 </body>
 </html>
