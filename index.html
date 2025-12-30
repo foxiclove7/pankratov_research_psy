@@ -181,8 +181,7 @@
                         border-radius: 12px; 
                         font-size: 16px; 
                         transition: all 0.3s; 
-                        background: var(--white); 
-                        margin-left: 50px; 
+                        background: var(--white);
                     }
                     
                     .text-input:focus {
@@ -335,6 +334,20 @@
             box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
         }
 
+        * Добавьте эти строки в самый конец файла */
+#country-input,
+#education-other-input {
+    padding-left: 50px;
+    box-sizing: border-box;
+}
+
+#country-input input,
+#education-other-input input {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+}
+
         @media (max-width: 768px) {
            .container { padding: 15px; }
            .page { padding: 25px 20px; }
@@ -398,9 +411,9 @@
                 </div>
                 <div class="question"><div class="question-text"><span class="question-number">3</span><span class="required">Страна проживания</span></div>
                     <div class="options-container"><label class="option" onclick="toggleInput('country-input', 'country-russia')">
-                            <input type="radio" name="country" id="country-russia" value="Российская Федерация" required>Российская Федерация</label>
+                            <input type="radio" name="entry.1069794579" value="Российская Федерация" required>Российская Федерация</label>
                         <label class="option" onclick="toggleInput('country-input', 'country-other')">
-                            <input type="radio" name="country" id="country-other" value="Другая страна">Другая страна (указать)</label>
+                            <input type="radio" name="entry.1422721313" value="Другая страна">Другая страна (указать)</label>
                         <div id="country-input" style="margin-top: 15px; display: none;">
                             <input type="text" class="text-input" id="country-other-text" placeholder="Введите название страны">
                         </div>
@@ -430,30 +443,50 @@
                     </div>
                 </div>
                 <div class="question"><div class="question-text"><span class="question-number">8</span><span class="required">Имеете ли вы коучинговое образование?</span></div>
-                    <div class="options-container"><label class="option" onclick="toggleCoachingFormat()">
-                            <input type="radio" name="coaching_edu" value="Да, профессиональное коучинговое образование" required>Да, профессиональное коучинговое образование</label>
-                        <label class="option" onclick="toggleCoachingFormat()">
-                            <input type="radio" name="coaching_edu" value="Прохожу обучение в настоящее время">Прохожу обучение в настоящее время</label>
-                        <label class="option" onclick="toggleCoachingFormat()">
-                            <input type="radio" name="coaching_edu" value="Проходил(а) краткосрочные курсы / тренинги по коучингу">Проходил(а) краткосрочные курсы / тренинги по коучингу</label>
-                        <label class="option" onclick="toggleCoachingFormat()">
-                            <input type="radio" name="coaching_edu" id="no-coaching" value="Нет, коучингового образования нет">Нет, коучингового образования нет</label>
-                    </div>
-                </div>
-                <div class="question" id="coaching-format-question" style="display: none;"><div class="question-text"><span class="question-number">9</span><span>Если у вас есть коучинговое образование, укажите его формат</span></div>
-                    <div class="options-container"><label class="option" onclick="toggleCoachingOther()">
-                            <input type="checkbox" name="coaching_format" value="Международная сертификация (ICF, EMCC и др.)">Международная сертификация (ICF, EMCC и др.)</label>
-                        <label class="option" onclick="toggleCoachingOther()">
-                            <input type="checkbox" name="coaching_format" value="Российская программа профессиональной переподготовки">Российская программа профессиональной переподготовки</label>
-                        <label class="option" onclick="toggleCoachingOther()">
-                            <input type="checkbox" name="coaching_format" value="Краткосрочные курсы / тренинги">Краткосрочные курсы / тренинги</label>
-                        <label class="option" onclick="toggleCoachingOther()">
-                            <input type="checkbox" name="coaching_format" id="coaching-other-checkbox" value="Другое">Другое (указать)</label>
-                        <div id="coaching-other-input" style="margin-top: 15px; display: none;">
-                            <input type="text" class="text-input" id="coaching-other-text" placeholder="Укажите другой формат">
-                        </div>
-                    </div>
-                </div>
+    <div class="options-container">
+        <label class="option" onclick="toggleCoachingFormat()">
+            <input type="radio" name="entry.1225698729" value="Да, профессиональное коучинговое образование" required>
+            Да, профессиональное коучинговое образование
+        </label>
+        <label class="option" onclick="toggleCoachingFormat()">
+            <input type="radio" name="entry.1225698729" value="Прохожу обучение в настоящее время">
+            Прохожу обучение в настоящее время
+        </label>
+        <label class="option" onclick="toggleCoachingFormat()">
+            <input type="radio" name="entry.1225698729" value="Проходил(а) краткосрочные курсы / тренинги по коучингу">
+            Проходил(а) краткосрочные курсы / тренинги по коучингу
+        </label>
+        <label class="option" onclick="toggleCoachingFormat()">
+            <input type="radio" name="entry.1225698729" id="no-coaching" value="Нет, коучингового образования нет">
+            Нет, коучингового образования нет
+        </label>
+    </div>
+</div>
+
+<div class="question" id="coaching-format-question" style="display: none;">
+    <div class="question-text"><span class="question-number">9</span><span>Если у вас есть коучинговое образование, укажите его формат</span></div>
+    <div class="options-container">
+        <label class="option" onclick="toggleCoachingOther()">
+            <input type="checkbox" name="entry.1827088797" value="Международная сертификация (ICF, EMCC и др.)">
+            Международная сертификация (ICF, EMCC и др.)
+        </label>
+        <label class="option" onclick="toggleCoachingOther()">
+            <input type="checkbox" name="entry.1827088797" value="Российская программа профессиональной переподготовки">
+            Российская программа профессиональной переподготовки
+        </label>
+        <label class="option" onclick="toggleCoachingOther()">
+            <input type="checkbox" name="entry.1827088797" value="Краткосрочные курсы / тренинги">
+            Краткосрочные курсы / тренинги
+        </label>
+        <label class="option" onclick="toggleCoachingOther()">
+            <input type="checkbox" name="entry.1827088797" id="coaching-other-checkbox" value="Другое">
+            Другое (указать)
+        </label>
+        <div id="coaching-other-input" style="margin-top: 15px; display: none;">
+            <input type="text" class="text-input" id="coaching-other-text" placeholder="Укажите другой формат">
+        </div>
+    </div>
+</div>
                 <div class="question"><div class="question-text"><span class="question-number">10</span><span class="required">Используете ли вы коучинговые инструменты в профессиональной деятельности?</span></div>
                     <div class="options-container"><label class="option"><input type="radio" name="coaching_use" value="Никогда" required>Никогда</label>
                         <label class="option"><input type="radio" name="coaching_use" value="Редко">Редко</label>
@@ -1591,27 +1624,54 @@ function calculateEminResults() {
         }
 
         // === ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ===
-        window.toggleInput = function(inputId, radioId) {
-            const inputContainer = document.getElementById(inputId);
-            const radio = document.getElementById(radioId);
-            inputContainer.style.display = radio.checked ? 'block' : 'none';
-            if (inputId === 'country-input') {
-                document.getElementById('country-other-text').required = radio.checked;
-                if (!radio.checked) document.getElementById('country-other-text').value = '';
-            }
-        };
+       function toggleInput() {
+    const countryInput = document.getElementById('country-input');
+    const otherCountryRadio = document.querySelector('input[name="entry.1422721313"]:checked');
+    
+    if (otherCountryRadio && otherCountryRadio.checked) {
+        countryInput.style.display = 'block';
+    } else {
+        countryInput.style.display = 'none';
+        document.getElementById('country-other-text').value = '';
+    }
+};
 
-        window.toggleCoachingFormat = function() {
-            const q9 = document.getElementById('coaching-format-question');
-            const selected = document.querySelector('input[name="coaching_edu"]:checked');
-            if (selected) {
-                q9.style.display = (selected.id === 'no-coaching') ? 'none' : 'block';
-                if (selected.id === 'no-coaching') {
-                    document.querySelectorAll('input[name="coaching_format"]').forEach(c => c.checked = false);
-                    document.getElementById('coaching-other-input').style.display = 'none';
-                    document.getElementById('coaching-other-text').value = '';
-                }
-            } else q9.style.display = 'none';
+        // Показ/скрытие вопросов про формат коучинга
+        function toggleCoachingFormat() {
+            const coachingFormatQuestion = document.getElementById('coaching-format-question');
+            const noCoachingRadio = document.querySelector('input[name="entry.1225698729"][value="Нет, коучингового образования нет"]');
+            
+            if (noCoachingRadio.checked) {
+                coachingFormatQuestion.style.display = 'none';
+                // Очищаем выбранные чекбоксы
+                document.querySelectorAll('input[name="entry.1827088797"]').forEach(cb => {
+                    cb.checked = false;
+                    cb.closest('.option')?.classList.remove('selected');
+                });
+                document.getElementById('coaching-other-input').style.display = 'none';
+                document.getElementById('coaching-other-input').value = '';
+            } else {
+                coachingFormatQuestion.style.display = 'block';
+            }
+        }
+
+        // Показ/скрытие поля "Другое" для формата коучинга
+        function toggleCoachingOther() {
+            const coachingOtherCheckbox = document.querySelector('input[name="entry.1827088797"][value="Другое"]');
+            const coachingOtherContainer = document.getElementById('coaching-other-input');
+            
+            if (coachingOtherCheckbox && coachingOtherContainer) {
+            if (coachingOtherCheckbox.checked) {
+                coachingOtherContainer.style.display = 'block';
+            } else {
+                coachingOtherContainer.style.display = 'none';
+                document.getElementById('coaching-other-text').value = '';
+            }
+        }
+    }
+        // Обновление значения "Другое" для формата коучинга
+        function updateCoachingOther() {
+            
         };
     </script>
 </body>
