@@ -25,49 +25,316 @@
                             radial-gradient(circle at 40% 80%, rgba(96, 165, 250, 0.05) 0%, transparent 50%);
             z-index: -1;
         }
-        .container { max-width: 800px; margin: 0 auto; padding: 30px 20px; position: relative; }
-        .page { background-color: rgba(255, 255, 255, 0.95); border-radius: 20px; box-shadow: 0 10px 30px rgba(30, 58, 138, 0.1); padding: 40px; margin-bottom: 30px; border: 1px solid rgba(59, 130, 246, 0.2); backdrop-filter: blur(10px); animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .hidden { display: none !important; }
-        h1, h2, h3 { color: var(--primary-blue); margin-bottom: 25px; text-align: center; }
-        h1 { font-size: 32px; border-bottom: 3px solid var(--secondary-blue); padding-bottom: 15px; margin-bottom: 30px; }
-        h2 { font-size: 28px; color: var(--dark-blue); margin-top: 10px; }
-        .intro-text { background: linear-gradient(135deg, var(--light-blue) 0%, #dbeafe 100%); padding: 25px; border-radius: 15px; border-left: 5px solid var(--secondary-blue); margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
-        .question { background: var(--white); margin: 25px 0; padding: 25px; border-radius: 15px; border: 2px solid var(--gray); transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .question:hover { border-color: var(--accent-blue); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15); }
-        .question::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: linear-gradient(to bottom, var(--secondary-blue), var(--accent-blue)); }
-        .question-number { display: inline-block; background: linear-gradient(135deg, var(--secondary-blue), var(--dark-blue)); color: white; width: 36px; height: 36px; border-radius: 50%; text-align: center; line-height: 36px; margin-right: 15px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
-        .question-text { font-weight: 600; margin-bottom: 20px; color: var(--text-dark); font-size: 18px; display: flex; align-items: center; min-height: 36px; }
-        .options-container { display: flex; flex-direction: column; gap: 15px; margin-left: 50px; }
-        .option { display: flex; align-items: center; padding: 15px 20px; border: 2px solid var(--border); border-radius: 12px; cursor: pointer; transition: all 0.3s ease; background: var(--white); }
-        .option:hover { background: var(--light-blue); border-color: var(--accent-blue); transform: translateX(5px); }
-        .option.selected { background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-color: var(--secondary-blue); font-weight: 600; color: var(--dark-blue); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2); }
-        .option input { margin-right: 15px; cursor: pointer; transform: scale(1.2); }
-        .text-input { width: 100%; padding: 15px 20px; border: 2px solid var(--border); border-radius: 12px; font-size: 16px; transition: all 0.3s; background: var(--white); margin-left: 50px; }
-        .text-input:focus { outline: none; border-color: var(--secondary-blue); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2); background: var(--light-blue); }
-        .btn { background: linear-gradient(135deg, var(--secondary-blue), var(--dark-blue)); color: white; border: none; padding: 18px 40px; border-radius: 12px; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 12px; margin: 40px auto 0; box-shadow: 0 6px 20px rgba(30, 64, 175, 0.3); position: relative; overflow: hidden; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(30, 64, 175, 0.4); }
-        .consent-container { background: linear-gradient(135deg, var(--light-blue) 0%, #dbeafe 100%); padding: 30px; border-radius: 15px; margin: 30px 0; border: 2px solid var(--accent-blue); }
-        .error-message { color: #dc2626; font-size: 15px; margin-top: 10px; padding: 10px 15px; background: rgba(220, 38, 38, 0.1); border-radius: 8px; border-left: 4px solid #dc2626; display: none; }
-        .test-instructions { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 25px; border-radius: 15px; margin-bottom: 30px; border-left: 5px solid var(--accent-blue); font-style: italic; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
-        .thank-you { text-align: center; padding: 60px 40px; background: linear-gradient(135deg, var(--light-blue) 0%, #dbeafe 100%); border-radius: 20px; border: 2px solid var(--accent-blue); }
-        .perma-scale { display: flex; flex-direction: column; align-items: center; margin: 25px 0 0 50px;}
-        .scale-labels { display: flex; justify-content: space-between; width: 100%; margin-bottom: 15px; font-size: 14px; color: var(--text-light); font-weight: 500; }
-        .scale-numbers { display: flex; justify-content: space-between; width: 100%; margin-top: 15px;}
-        .scale-number { width: 40px; height: 40px; border-radius: 50%; background: var(--gray); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; font-weight: bold; font-size: 16px; color: var(--text-dark);}
-        .scale-number:hover, .scale-number.selected { background: linear-gradient(135deg, var(--secondary-blue), var(--dark-blue)); color: white; transform: scale(1.1); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
-        .progress-indicator {
-            display: flex; justify-content: space-between; margin-bottom: 40px; position: relative;
-        }
+        .container {
+             max-width: 800px;
+             margin: 0 auto; 
+             padding: 30px 20px; 
+             position: relative; 
+            }
+        
+        .page {
+             background-color: rgba(255, 255, 255, 0.95); 
+             border-radius: 20px; 
+             box-shadow: 0 10px 30px rgba(30, 58, 138, 0.1); 
+             padding: 40px; 
+             margin-bottom: 30px; 
+             border: 1px solid rgba(59, 130, 246, 0.2); 
+             backdrop-filter: blur(10px); 
+             animation: fadeIn 0.5s ease-out; 
+            }
+            
+            @keyframes fadeIn {
+                 from {
+                     opacity: 0; 
+                     transform: translateY(20px); 
+                    } 
+                    to {
+                        opacity: 1; 
+                        transform: translateY(0); 
+                    } 
+                }
+
+                .hidden { 
+                    display: none !important; 
+                }
+
+                h1, h2, h3 { 
+                    color: var(--primary-blue); 
+                    margin-bottom: 25px; 
+                    text-align: center; 
+                }
+
+                h1 { 
+                    font-size: 32px; 
+                    border-bottom: 3px solid var(--secondary-blue); 
+                    padding-bottom: 15px; 
+                    margin-bottom: 30px; 
+                }
+
+                h2 {
+                    font-size: 28px; 
+                    color: var(--dark-blue); 
+                    margin-top: 10px; 
+                }
+
+                .intro-text { 
+                    background: linear-gradient(135deg, var(--light-blue) 0%, #dbeafe 100%); 
+                    padding: 25px; 
+                    border-radius: 15px; 
+                    border-left: 5px solid var(--secondary-blue); 
+                    margin-bottom: 30px; 
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); 
+                }
+
+                .question {
+                    background: var(--white); 
+                    margin: 25px 0; 
+                    padding: 25px; 
+                    border-radius: 15px; 
+                    border: 2px solid var(--gray); 
+                    transition: all 0.3s ease; 
+                    position: relative; 
+                    overflow: hidden; 
+                }
+
+                .question:hover {
+                    border-color: var(--accent-blue); 
+                    transform: translateY(-2px); 
+                    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15); 
+                }
+
+                .question::before {
+                     content: ''; 
+                     position: absolute; 
+                     top: 0; 
+                     left: 0;
+                     width: 5px; 
+                     height: 100%; 
+                     background: linear-gradient(to bottom, var(--secondary-blue), var(--accent-blue)); 
+                    }
+
+                     .question-number {
+                        display: inline-block; 
+                        background: linear-gradient(135deg, var(--secondary-blue), var(--dark-blue)); 
+                        color: white; width: 36px; height: 36px; 
+                        border-radius: 50%; 
+                        text-align: center; 
+                        line-height: 36px; 
+                        margin-right: 15px; 
+                        font-weight: bold; 
+                        font-size: 18px; 
+                        box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); 
+                    }
+
+                    .question-text {
+                        font-weight: 600; 
+                        margin-bottom: 20px; 
+                        color: var(--text-dark); 
+                        font-size: 18px; 
+                        display: flex; 
+                        align-items: center;
+                        min-height: 36px; 
+                    }
+
+                    .options-container {
+                        display: flex; 
+                        flex-direction: column; 
+                        gap: 15px; 
+                        margin-left: 50px; 
+                    }
+
+                    .option { 
+                        display: flex; 
+                        align-items: center; 
+                        padding: 15px 20px; 
+                        border: 2px solid var(--border); 
+                        border-radius: 12px; 
+                        cursor: pointer; 
+                        transition: all 0.3s ease; 
+                        background: var(--white); 
+                    }
+
+                    .option:hover { 
+                        background: var(--light-blue); 
+                        border-color: var(--accent-blue); 
+                        transform: translateX(5px); 
+                    }
+
+                    .option.selected {
+                        background: linear-gradient(135deg, #dbeafe, #bfdbfe); 
+                        border-color: var(--secondary-blue); 
+                        font-weight: 600; 
+                        color: var(--dark-blue); 
+                        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2); 
+                    }
+
+                    .option input {
+                        margin-right: 15px; 
+                        cursor: pointer; 
+                        transform: scale(1.2); 
+                    }
+
+                    .text-input {
+                        width: 100%; 
+                        padding: 15px 20px; 
+                        border: 2px solid var(--border); 
+                        border-radius: 12px; 
+                        font-size: 16px; 
+                        transition: all 0.3s; 
+                        background: var(--white); 
+                        margin-left: 50px; 
+                    }
+                    
+                    .text-input:focus {
+                        outline: none; 
+                        border-color: var(--secondary-blue); 
+                        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2); 
+                        background: var(--light-blue); 
+                    }
+                    
+                    .btn {
+                        background: linear-gradient(135deg, var(--secondary-blue), var(--dark-blue)); 
+                        color: white; 
+                        border: none; 
+                        padding: 18px 40px; 
+                        border-radius: 12px; 
+                        font-size: 18px; 
+                        font-weight: 600; 
+                        cursor: pointer; 
+                        transition: all 0.3s; 
+                        display: flex; 
+                        align-items: center; 
+                        justify-content: center; 
+                        gap: 12px; 
+                        margin: 40px auto 0;
+                        box-shadow: 0 6px 20px rgba(30, 64, 175, 0.3); 
+                        position: relative; 
+                        overflow: hidden; 
+                    }
+
+                    .btn:hover {
+                        transform: translateY(-3px); 
+                        box-shadow: 0 10px 25px rgba(30, 64, 175, 0.4); 
+                    }
+
+                    .consent-container { 
+                        background: linear-gradient(135deg, var(--light-blue) 0%, #dbeafe 100%); 
+                        padding: 30px; 
+                        border-radius: 15px; 
+                        margin: 30px 0; 
+                        border: 2px solid var(--accent-blue); 
+                    }
+
+                    .error-message { 
+                        color: #dc2626; 
+                        font-size: 15px; 
+                        margin-top: 10px; 
+                        padding: 10px 15px; 
+                        background: rgba(220, 38, 38, 0.1); 
+                        border-radius: 8px; 
+                        border-left: 4px solid #dc2626; 
+                        display: none; 
+                    }
+
+                    .test-instructions { 
+                        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); 
+                        padding: 25px; 
+                        border-radius: 15px; 
+                        margin-bottom: 30px; 
+                        border-left: 5px solid var(--accent-blue); 
+                        font-style: italic; 
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); 
+                    }
+
+                    .thank-you { 
+                        text-align: center; 
+                        padding: 60px 40px; 
+                        background: linear-gradient(135deg, var(--light-blue) 0%, #dbeafe 100%); 
+                        border-radius: 20px; 
+                        border: 2px solid var(--accent-blue); 
+                    }
+
+                    .perma-scale { 
+                        display: flex; 
+                        flex-direction: column; 
+                        align-items: center; 
+                        margin: 25px 0 0 50px;
+                    }
+
+                    .scale-labels { 
+                        display: flex; 
+                        justify-content: space-between; 
+                        width: 100%; margin-bottom: 15px; 
+                        font-size: 14px; 
+                        color: var(--text-light); 
+                        font-weight: 500; 
+                    }
+
+                    .scale-numbers { 
+                        display: flex; 
+                        justify-content: space-between; 
+                        width: 100%; 
+                        margin-top: 15px;
+                    }
+
+                    .scale-number { 
+                        width: 40px; 
+                        height: 40px; 
+                        border-radius: 50%; 
+                        background: var(--gray); 
+                        display: flex; 
+                        align-items: center; 
+                        justify-content: center; 
+                        cursor: pointer; 
+                        transition: all 0.3s; 
+                        font-weight: bold; 
+                        font-size: 16px; 
+                        color: var(--text-dark);
+                    }
+
+                    .scale-number:hover, .scale-number.selected { 
+                        background: linear-gradient(135deg, var(--secondary-blue), var(--dark-blue)); 
+                        color: white; 
+                        transform: scale(1.1); 
+                        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); 
+                    }
+
+                    .progress-indicator {
+                        display: flex; 
+                        justify-content: space-between; 
+                        margin-bottom: 40px; 
+                        position: relative;
+                    }
+
         .progress-indicator::before {
-            content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 4px; background: var(--border); transform: translateY(-50%); z-index: 0;
+            content: ''; 
+            position: absolute; 
+            top: 50%; 
+            left: 0; 
+            right: 0; 
+            height: 4px; 
+            background: var(--border); 
+            transform: translateY(-50%); 
+            z-index: 0;
         }
+
         .progress-step {
-            width: 30px; height: 30px; border-radius: 50%; background: var(--gray); border: 3px solid var(--border); position: relative; z-index: 1; transition: all 0.3s;
+            width: 30px; 
+            height: 30px; 
+            border-radius: 50%; 
+            background: var(--gray); 
+            border: 3px solid var(--border); 
+            position: relative; 
+            z-index: 1; 
+            transition: all 0.3s;
         }
+
         .progress-step.active {
-            background: var(--secondary-blue); border-color: var(--dark-blue); box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+            background: var(--secondary-blue); 
+            border-color: var(--dark-blue); 
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
         }
+
         @media (max-width: 768px) {
            .container { padding: 15px; }
            .page { padding: 25px 20px; }
@@ -75,8 +342,10 @@
            .options-container, .text-input, .perma-scale { margin-left: 0; margin-top: 15px; }
            .scale-number { width: 35px; height: 35px; }
           }
+
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Прогресс-индикатор -->
@@ -194,14 +463,14 @@
                     </div>
                 </div>
             </form>
-            <button class="btn" id="btn-next-2">Далее: Тест жизнестойкости <i class="fas fa-arrow-right"></i></button>
+            <button class="btn" id="btn-next-2">Далее <i class="fas fa-arrow-right"></i></button>
         </div>
 
         <!-- СТРАНИЦА 3-6: ТЕСТЫ (будут заполнены через JS) -->
-        <div class="page hidden" id="page-3"><h2>Тест жизнестойкости</h2><div class="test-instructions"><p><strong>Инструкция:</strong> Ответьте, пожалуйста, на несколько вопросов о себе. Выбирайте тот ответ, который наилучшим образом отражает Ваше мнение. Здесь нет правильных или неправильных ответов, так как важно только Ваше мнение. Подолгу не задумывайтесь над ответами. Работайте последовательно, не пропуская вопросов.</p></div><form id="hardiness-form"></form><button class="btn" id="btn-next-3">Далее: Опросник PERMA <i class="fas fa-arrow-right"></i></button></div>
-        <div class="page hidden" id="page-4"><h2>Опросник благополучия PERMA-Profiler</h2><div class="test-instructions"><p><strong>Инструкция:</strong> Просим Вас ответить на вопросы, представленные ниже. Выбирайте, пожалуйста, соответствующий вариант ответа, наиболее полно описывающий Вашу жизнь.</p></div><form id="perma-form"></form><button class="btn" id="btn-next-4">Далее: Шкала самоэффективности <i class="fas fa-arrow-right"></i></button></div>
-        <div class="page hidden" id="page-5"><h2>Шкала общей самоэффективности (GSE)</h2><div class="test-instructions"><p><strong>Инструкция:</strong> Пожалуйста, оцените, насколько каждое из следующих утверждений соответствует вам.</p></div><form id="gse-form"></form><button class="btn" id="btn-next-5">Далее: Опросник ЭМИН <i class="fas fa-arrow-right"></i></button></div>
-        <div class="page hidden" id="page-6"><h2>Опросник эмоционального интеллекта «ЭМИН»</h2><div class="test-instructions"><p><strong>Инструкция:</strong> Вам предлагается заполнить опросник, состоящий из 46 утверждений. Читайте внимательно каждое утверждение и отмечайте тот ответ, который лучше всего отражает Ваше мнение.</p></div><form id="emin-form"></form><button class="btn" id="btn-submit-all">Завершить исследование <i class="fas fa-check"></i></button></div>
+        <div class="page hidden" id="page-3"><h2>Опросник №1</h2><div class="test-instructions"><p><strong>Инструкция:</strong> Ответьте, пожалуйста, на несколько вопросов о себе. Выбирайте тот ответ, который наилучшим образом отражает Ваше мнение. Здесь нет правильных или неправильных ответов, так как важно только Ваше мнение. Подолгу не задумывайтесь над ответами. Работайте последовательно, не пропуская вопросов.</p></div><form id="hardiness-form"></form><button class="btn" id="btn-next-3">Далее<i class="fas fa-arrow-right"></i></button></div>
+        <div class="page hidden" id="page-4"><h2>Опросник №2</h2><div class="test-instructions"><p><strong>Инструкция:</strong> Просим Вас ответить на вопросы, представленные ниже. Выбирайте, пожалуйста, соответствующий вариант ответа, наиболее полно описывающий Вашу жизнь.</p></div><form id="perma-form"></form><button class="btn" id="btn-next-4">Далее<i class="fas fa-arrow-right"></i></button></div>
+        <div class="page hidden" id="page-5"><h2>Опросник №3</h2><div class="test-instructions"><p><strong>Инструкция:</strong> Пожалуйста, оцените, насколько каждое из следующих утверждений соответствует вам.</p></div><form id="gse-form"></form><button class="btn" id="btn-next-5">Далее<i class="fas fa-arrow-right"></i></button></div>
+        <div class="page hidden" id="page-6"><h2>Опросник №4</h2><div class="test-instructions"><p><strong>Инструкция:</strong> Вам предлагается заполнить опросник, состоящий из 46 утверждений. Читайте внимательно каждое утверждение и отмечайте тот ответ, который лучше всего отражает Ваше мнение.</p></div><form id="emin-form"></form><button class="btn" id="btn-submit-all">Завершить исследование<i class="fas fa-check"></i></button></div>
 
         <!-- СТРАНИЦА 7: ЗАВЕРШЕНИЕ -->
         <div class="page hidden" id="page-7"><div class="thank-you"><i class="fas fa-heart"></i><h2>Благодарим вас за участие в исследовании!</h2><p>Ваши ответы имеют большое значение для научного анализа и будут использованы только в обобщённом виде.</p><p style="margin-top: 30px; font-size: 16px; color: var(--text-light);"><i class="fas fa-check-circle" style="color: var(--secondary-blue);"></i> Данные успешно сохранены</p></div></div>
@@ -209,7 +478,7 @@
 
     <!-- Скрытая форма для Google Forms -->
     <iframe name="hidden-iframe" id="hidden-iframe" style="display: none;"></iframe>
-    <form id="google-form" action="https://docs.google.com/forms/d/e/1FAIpQLSdwi_jzRcKckvSo342WloKTqlJXq6l9Pn3JgRVzYWfF0W2H1Q/formResponse" method="POST" target="hidden-iframe">
+    <form id="google-form" action="https://docs.google.com/forms/d/e/1FAIpQLSevaO9z06KMc1oUrvlFZ7U_BaDw_SMVRmvc9k7n-H9nDvLFaw/formResponse" method="POST" target="hidden-iframe">
         <!-- Поля будут добавлены динамически -->
     </form>
 
@@ -354,7 +623,7 @@
                     "Если надо, я могу разозлить человека",
                     "Когда я испытываю положительные эмоции, я знаю, как поддержать это состояние",
                     "Как правило, я понимаю, какую эмоцию испытываю",
-                    "Если собеседник пытается скрыть свои эмоций, я сразу чувствую это",
+                    "Если собеседник пытается скрыть свои эмоций, я сразу чувствует это",
                     "Я знаю как успокоиться, если я разозлился",
                     "Можно определить, что чувствует человек, просто прислушиваясь к звучанию его голоса",
                     "Я не умею управлять эмоциями других людей",
@@ -381,60 +650,184 @@
         // === ID полей Google Forms (НУЖНО ЗАПОЛНИТЬ!) ===
         const fieldIds = {
             // АНКЕТА (текст)
-            age: "entry.1352937802",
-            gender: "entry.2056791556",
-            country: "entry.1766384140",
-            country_other: "entry.1451513439",
-            location: "entry.1234567890", // ЗАМЕНИТЬ
-            profession: "entry.1234567891", // ЗАМЕНИТЬ
-            experience: "entry.1234567892", // ЗАМЕНИТЬ
-            manager: "entry.1234567893", // ЗАМЕНИТЬ
-            coaching_edu: "entry.1234567894", // ЗАМЕНИТЬ
-            coaching_format: "entry.1234567895", // ЗАМЕНИТЬ
-            coaching_other: "entry.1234567896", // ЗАМЕНИТЬ
-            coaching_use: "entry.1234567897", // ЗАМЕНИТЬ
-            gse_result: "entry.1234567898", // ЗАМЕНИТЕ на реальный ID из Google Forms
+            age: "entry.2062968811",
+            gender: "entry.1838256035",
+            country: "entry.1069794579",
+            country_other: "entry.1422721313",
+            location: "entry.232272482", 
+            profession: "entry.577720819", 
+            experience: "entry.2111220557",
+            manager: "entry.809169509",
+            coaching_edu: "entry.1225698729", 
+            coaching_format: "entry.1827088797",
+            coaching_other: "entry.1267161364",
+            coaching_use: "entry.1065420322", 
+            
+            // === ЖИЗНЕСТОЙКОСТЬ (результаты) ===
+             hardiness_engagement: "entry.1750753256", 
+             hardiness_control: "entry.922773670", 
+             hardiness_risk: "entry.1203459240", 
+             hardiness_total: "entry.674199064",
+            
+            // === PERMA (результаты) ===
+            perma_positive: "entry.509603031",
+            perma_engagement: "entry.647998971", 
+            perma_relationships: "entry.656599173",
+            perma_meaning: "entry.695738218",
+            perma_accomplishment: "entry.702593872",
+            perma_happiness: "entry.797431395",
+            perma_negative: "entry.820243098",
+            perma_health: "entry.887264297",
+            perma_loneliness: "entry.907084478",
+            perma_total: "entry.98211568",
+
+            // === GSE (результаты) ===
+            gse_total: "entry.824093292",
+            gse_result: "entry.2004913685", 
+
+            // === ЭМИН (результаты) ===
+            emin_MP: "entry.1813433004",
+            emin_MU: "entry.1287234286", 
+            emin_VP: "entry.109897569",
+            emin_VU: "entry.1956376896",
+            emin_VE: "entry.312565547",
+            emin_MEI: "entry.945932969",
+            emin_VEI: "entry.1005179086",
+            emin_PE: "entry.1618945901",
+            emin_UE: "entry.1913163216",
+            emin_OEI: "entry.407648291",
             
             // ЖИЗНЕСТОЙКОСТЬ (числа 0-3)
-            h1: "entry.637969672", h2: "entry.1080328775", h3: "entry.1642461202", h4: "entry.1004132077",
-            h5: "entry.2098305672", h6: "entry.1266042466", h7: "entry.2057516103", h8: "entry.1405091370",
-            h9: "entry.35065539", h10: "entry.2024972268", h11: "entry.1164536568", h12: "entry.1331492701",
-            h13: "entry.1623368838", h14: "entry.1485116985", h15: "entry.1628688220", h16: "entry.537412057",
-            h17: "entry.1948236222", h18: "entry.2041037792", h19: "entry.1047614827", h20: "entry.1755324816",
-            h21: "entry.1849232278", h22: "entry.1376502028", h23: "entry.1314045082", h24: "entry.691310271",
-            h25: "entry.238315054", h26: "entry.664833969", h27: "entry.382722974", h28: "entry.2027270734",
-            h29: "entry.182666469", h30: "entry.1221020191", h31: "entry.2113339701", h32: "entry.1571969723",
-            h33: "entry.1516258433", h34: "entry.2086523974", h35: "entry.1380114567", h36: "entry.277960068",
-            h37: "entry.281396879", h38: "entry.1368910803", h39: "entry.1537059741", h40: "entry.1705136242",
-            h41: "entry.1781892385", h42: "entry.656029599", h43: "entry.88812415", h44: "entry.928254977",
-            h45: "entry.1620853572",
+            h1: "entry.1314489091", 
+            h2: "entry.1440705895", 
+            h3: "entry.1576740828", 
+            h4: "entry.1617052396", 
+            h5: "entry.1859587526", 
+            h6: "entry.1957353618", 
+            h7: "entry.543507463", 
+            h8: "entry.1487929441", 
+            h9: "entry.936070539", 
+            h10: "entry.156983109", 
+            h11: "entry.836392443", 
+            h12: "entry.1679179462", 
+            h13: "entry.764395559", 
+            h14: "entry.1227513792", 
+            h15: "entry.557862474", 
+            h16: "entry.1263946020", 
+            h17: "entry.1255430698", 
+            h18: "entry.853466114", 
+            h19: "entry.210153218", 
+            h20: "entry.1892380724", 
+            h21: "entry.1706108792", 
+            h22: "entry.1485208372", 
+            h23: "entry.17690021", 
+            h24: "entry.670634469", 
+            h25: "entry.278760171", 
+            h26: "entry.1380724539", 
+            h27: "entry.1347194956", 
+            h28: "entry.59879277", 
+            h29: "entry.1921373443", 
+            h30: "entry.462424541", 
+            h31: "entry.1754233891", 
+            h32: "entry.1179907395", 
+            h33: "entry.2094593489", 
+            h34: "entry.28064954", 
+            h35: "entry.752275978", 
+            h36: "entry.1622057381", 
+            h37: "entry.1638986977", 
+            h38: "entry.1415503441", 
+            h39: "entry.120908733", 
+            h40: "entry.759904124", 
+            h41: "entry.1584204705", 
+            h42: "entry.1823636750", 
+            h43: "entry.1879361158", 
+            h44: "entry.900493493", 
+            h45: "entry.800380550",
             
             // PERMA (числа 0-10)
-            p1: "entry.595247189", p2: "entry.2058567049", p3: "entry.1176570669", p4: "entry.2141174479",
-            p5: "entry.2078304661", p6: "entry.1245030776", p7: "entry.1425453851", p8: "entry.1461736934",
-            p9: "entry.1917841530", p10: "entry.1151178463", p11: "entry.1273637025", p12: "entry.1635683015",
-            p13: "entry.1657388446", p14: "entry.1967426680", p15: "entry.643526271", p16: "entry.1532834154",
-            p17: "entry.1800589773", p18: "entry.328287546", p19: "entry.1942611562", p20: "entry.1383653759",
-            p21: "entry.1861012736", p22: "entry.254166997", p23: "entry.1009326829",
+            p1: "entry.1041579553", 
+            p2: "entry.1087490402", 
+            p3: "entry.1217542794", 
+            p4: "entry.123139332", 
+            p5: "entry.1286866332", 
+            p6: "entry.1508388682", 
+            p7: "entry.1541850951", 
+            p8: "entry.1563838060", 
+            p9: "entry.1632141632", 
+            p10: "entry.1659030389", 
+            p11: "entry.1664888450", 
+            p12: "entry.1752249121", 
+            p13: "entry.1801640091", 
+            p14: "entry.1805132823", 
+            p15: "entry.1845819040", 
+            p16: "entry.1860974054", 
+            p17: "entry.1881363753", 
+            p18: "entry.2013184101", 
+            p19: "entry.27140809", 
+            p20: "entry.461285287", 
+            p21: "entry.470009969", 
+            p22: "entry.485407814", 
+            p23: "entry.506773851",
             
             // GSE (числа 1-4)
-            g1: "entry.1676361897", g2: "entry.1433583400", g3: "entry.337870566", g4: "entry.843412834",
-            g5: "entry.224231724", g6: "entry.934042715", g7: "entry.982365857", g8: "entry.2047650913",
-            g9: "entry.1758514267", g10: "entry.1805380507",
+            g1: "entry.1986881198", 
+            g2: "entry.1660047972", 
+            g3: "entry.695444461", 
+            g4: "entry.449766470", 
+            g5: "entry.193665566", 
+            g6: "entry.1982333447", 
+            g7: "entry.216094061", 
+            g8: "entry.852746899", 
+            g9: "entry.1669318262", 
+            g10: "entry.892421237",
             
             // ЭМИН (числа 1-4)
-            e1: "entry.1368160812", e2: "entry.1023023815", e3: "entry.1946208520", e4: "entry.1761389995",
-            e5: "entry.325762715", e6: "entry.647096614", e7: "entry.987804744", e8: "entry.723678323",
-            e9: "entry.709669552", e10: "entry.1420980281", e11: "entry.234022751", e12: "entry.366722150",
-            e13: "entry.516925014", e14: "entry.1310850647", e15: "entry.1637631847", e16: "entry.1225040940",
-            e17: "entry.1588435359", e18: "entry.1508583588", e19: "entry.2002363989", e20: "entry.1813696963",
-            e21: "entry.437786522", e22: "entry.2124599046", e23: "entry.517379941", e24: "entry.507924103",
-            e25: "entry.739451298", e26: "entry.325861704", e27: "entry.125786078", e28: "entry.952420552",
-            e29: "entry.960393634", e30: "entry.126132735", e31: "entry.335448281", e32: "entry.1422741638",
-            e33: "entry.1681714293", e34: "entry.275879103", e35: "entry.926759871", e36: "entry.977029036",
-            e37: "entry.699275990", e38: "entry.1457104056", e39: "entry.204133423", e40: "entry.1400392877",
-            e41: "entry.2142379603", e42: "entry.511278545", e43: "entry.1549754441", e44: "entry.1625419742",
-            e45: "entry.2011195597", e46: "entry.129199237"
+            e1: "entry.715592580", 
+            e2: "entry.342928821", 
+            e3: "entry.145857806", 
+            e4: "entry.677511297", 
+            e5: "entry.1173891606", 
+            e6: "entry.213229875", 
+            e7: "entry.320131408", 
+            e8: "entry.1264318678", 
+            e9: "entry.627262610", 
+            e10: "entry.664790618", 
+            e11: "entry.1113883032", 
+            e12: "entry.441686489", 
+            e13: "entry.1395391395", 
+            e14: "entry.1208552282", 
+            e15: "entry.1502793136", 
+            e16: "entry.58611045", 
+            e17: "entry.1190626568", 
+            e18: "entry.1948969576", 
+            e19: "entry.45738444", 
+            e20: "entry.619993726", 
+            e21: "entry.1886040173", 
+            e22: "entry.166643339", 
+            e23: "entry.184479961", 
+            e24: "entry.1166733933", 
+            e25: "entry.1056505211", 
+            e26: "entry.1949670662", 
+            e27: "entry.708832655", 
+            e28: "entry.993119501", 
+            e29: "entry.392057712", 
+            e30: "entry.68330674", 
+            e31: "entry.614928617", 
+            e32: "entry.1818744100",
+            e33: "entry.1642471060", 
+            e34: "entry.314708604", 
+            e35: "entry.453558105", 
+            e36: "entry.2142852854", 
+            e37: "entry.2014191801", 
+            e38: "entry.1620795857", 
+            e39: "entry.1989124036", 
+            e40: "entry.215887564", 
+            e41: "entry.289898071", 
+            e42: "entry.800415360", 
+            e43: "entry.1766257603", 
+            e44: "entry.117794083", 
+            e45: "entry.146722044", 
+            e46: "entry.914633404",
         };
 
         // === СОСТОЯНИЕ ===
@@ -821,7 +1214,8 @@
         function submitToGoogleForms() {
             const googleForm = document.getElementById('google-form');
             googleForm.innerHTML = '';
-            
+        }
+        
             // Анкетные данные (текст)
             for (const [key, value] of Object.entries(state.answers.demographic)) {
                 if (Array.isArray(value)) {
@@ -841,13 +1235,63 @@
             state.answers.gse.forEach((value, index) => {
                 if (value !== null) addHiddenField(googleForm, fieldIds[`g${index+1}`], value);
             });
-            const gseResult = calculateGSEresult();
-                if (gseResult) {
-                      addHiddenField(googleForm, fieldIds.gse_result, gseResult.fullText);
-                    }
             state.answers.emin.forEach((value, index) => {
                 if (value !== null) addHiddenField(googleForm, fieldIds[`e${index+1}`], value);
             });
+            
+            // === РАСЧЕТ И ОТПРАВКА РЕЗУЛЬТАТОВ ТЕСТОВ ===
+            const hardiness = calculateHardinessResults();
+            const perma = calculatePermaResults();
+            const gse = calculateGSEresult();
+            const emin = calculateEminResults();
+            
+            // Жизнестойкость
+    if (hardiness && fieldIds.hardiness_total) {
+        addHiddenField(googleForm, fieldIds.hardiness_total, hardiness.total);
+        addHiddenField(googleForm, fieldIds.hardiness_engagement, hardiness.engagement);
+        addHiddenField(googleForm, fieldIds.hardiness_control, hardiness.control);
+        addHiddenField(googleForm, fieldIds.hardiness_risk, hardiness.risk);
+    }
+    
+    // PERMA
+    if (perma && fieldIds.perma_total) {
+        addHiddenField(googleForm, fieldIds.perma_total, perma.total);
+        addHiddenField(googleForm, fieldIds.perma_positive, perma.positive);
+        addHiddenField(googleForm, fieldIds.perma_engagement, perma.engagement);
+        addHiddenField(googleForm, fieldIds.perma_relationships, perma.relationships);
+        addHiddenField(googleForm, fieldIds.perma_meaning, perma.meaning);
+        addHiddenField(googleForm, fieldIds.perma_accomplishment, perma.accomplishment);
+        addHiddenField(googleForm, fieldIds.perma_happiness, perma.happiness);
+        addHiddenField(googleForm, fieldIds.perma_negative, perma.negative);
+        addHiddenField(googleForm, fieldIds.perma_health, perma.health);
+        addHiddenField(googleForm, fieldIds.perma_loneliness, perma.loneliness);
+    }
+    
+    // GSE
+    if (gse && fieldIds.gse_total) {
+        addHiddenField(googleForm, fieldIds.gse_total, gse.sum);
+        addHiddenField(googleForm, fieldIds.gse_result, gse.fullText);
+    }
+    
+    // ЭМИН
+    if (emin && fieldIds.emin_MP) {
+        addHiddenField(googleForm, fieldIds.emin_MP, emin.MP);
+        addHiddenField(googleForm, fieldIds.emin_MU, emin.MU);
+        addHiddenField(googleForm, fieldIds.emin_VP, emin.VP);
+        addHiddenField(googleForm, fieldIds.emin_VU, emin.VU);
+        addHiddenField(googleForm, fieldIds.emin_VE, emin.VE);
+        addHiddenField(googleForm, fieldIds.emin_MEI, emin.MEI);
+        addHiddenField(googleForm, fieldIds.emin_VEI, emin.VEI);
+        addHiddenField(googleForm, fieldIds.emin_PE, emin.PE);
+        addHiddenField(googleForm, fieldIds.emin_UE, emin.UE);
+        addHiddenField(googleForm, fieldIds.emin_OEI, emin.OEI);
+            
+            // Для отладки (показывает результаты в консоли)
+            console.log('=== РЕЗУЛЬТАТЫ ===');
+            console.log('Жизнестойкость:', hardiness);
+            console.log('PERMA:', perma);
+            console.log('GSE:', gse);
+            console.log('ЭМИН:', emin);
             
             googleForm.submit();
         }
@@ -863,7 +1307,154 @@
             input.value = value;
             form.appendChild(input);
         }
-        // === РАСЧЕТ РЕЗУЛЬТАТА GSE ===
+
+        // === ФУНКЦИИ РАСЧЕТА РЕЗУЛЬТАТОВ ===
+        
+       // 1. ЖИЗНЕСТОЙКОСТЬ (по вашим формулам)
+function calculateHardinessResults() {
+    const answers = state.answers.hardiness;
+    
+    // Вовлеченность: прямые 4,12,22,23,24,29,41; обратные 2,3,10,11,14,28,32,37,38,40,42
+    const engagementDirect = [3,11,21,22,23,28,40]; // индексы с 0
+    const engagementReverse = [1,2,9,10,13,27,31,36,37,39,41];
+    
+    let engagement = 0;
+    engagementDirect.forEach(idx => {
+        if (answers[idx] !== null) engagement += answers[idx];
+    });
+    engagementReverse.forEach(idx => {
+        if (answers[idx] !== null) engagement += (3 - answers[idx]); // обратное кодирование
+    });
+    
+    // Контроль: прямые 9,15,17,21,25,44; обратные 1,5,6,8,16,20,27,31,35,39,43
+    const controlDirect = [8,14,16,20,24,43];
+    const controlReverse = [0,4,5,7,15,19,26,30,34,38,42];
+    
+    let control = 0;
+    controlDirect.forEach(idx => {
+        if (answers[idx] !== null) control += answers[idx];
+    });
+    controlReverse.forEach(idx => {
+        if (answers[idx] !== null) control += (3 - answers[idx]);
+    });
+    
+    // Принятие риска: прямые 34,45; обратные 7,13,18,19,26,30,33,36
+    const riskDirect = [33,44];
+    const riskReverse = [6,12,17,18,25,29,32,35];
+    
+    let risk = 0;
+    riskDirect.forEach(idx => {
+        if (answers[idx] !== null) risk += answers[idx];
+    });
+    riskReverse.forEach(idx => {
+        if (answers[idx] !== null) risk += (3 - answers[idx]);
+    });
+    
+    const total = engagement + control + risk;
+    
+    return {
+        total: total,
+        engagement: engagement,
+        control: control,
+        risk: risk,
+        fullText: `Жизнестойкость: ${total} (Вовл:${engagement}, Контр:${control}, Риск:${risk})`
+    };
+}
+
+// 2. PERMA (по вашим формулам)
+function calculatePermaResults() {
+    const answers = state.answers.perma;
+    
+    // Позитивные эмоции: вопросы 3,13,22
+    const positiveItems = [2,12,21];
+    let positive = 0;
+    positiveItems.forEach(idx => {
+        if (answers[idx] !== null) positive += answers[idx];
+    });
+    positive = (positive / positiveItems.length).toFixed(2);
+    
+    // Вовлеченность: 2,10,17
+    const engagementItems = [1,9,16];
+    let engagement = 0;
+    engagementItems.forEach(idx => {
+        if (answers[idx] !== null) engagement += answers[idx];
+    });
+    engagement = (engagement / engagementItems.length).toFixed(2);
+    
+    // Взаимоотношения: 8,19,21
+    const relationshipsItems = [7,18,20];
+    let relationships = 0;
+    relationshipsItems.forEach(idx => {
+        if (answers[idx] !== null) relationships += answers[idx];
+    });
+    relationships = (relationships / relationshipsItems.length).toFixed(2);
+    
+    // Смысл: 7,9,20
+    const meaningItems = [6,8,19];
+    let meaning = 0;
+    meaningItems.forEach(idx => {
+        if (answers[idx] !== null) meaning += answers[idx];
+    });
+    meaning = (meaning / meaningItems.length).toFixed(2);
+    
+    // Достижения: 1,5,15
+    const accomplishmentItems = [0,4,14];
+    let accomplishment = 0;
+    accomplishmentItems.forEach(idx => {
+        if (answers[idx] !== null) accomplishment += answers[idx];
+    });
+    accomplishment = (accomplishment / accomplishmentItems.length).toFixed(2);
+    
+    // Счастье: 23
+    const happiness = answers[22] !== null ? answers[22].toFixed(2) : null;
+    
+    // Негативные эмоции: 4,14,16
+    const negativeItems = [3,13,15];
+    let negative = 0;
+    negativeItems.forEach(idx => {
+        if (answers[idx] !== null) negative += answers[idx];
+    });
+    negative = (negative / negativeItems.length).toFixed(2);
+    
+    // Здоровье: 6,12,18
+    const healthItems = [5,11,17];
+    let health = 0;
+    healthItems.forEach(idx => {
+        if (answers[idx] !== null) health += answers[idx];
+    });
+    health = (health / healthItems.length).toFixed(2);
+    
+    // Одиночество: 11
+    const loneliness = answers[10] !== null ? answers[10].toFixed(2) : null;
+    
+    // Общий PERMA
+    const permaItems = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22];
+    let permaTotal = 0;
+    let permaCount = 0;
+    permaItems.forEach(idx => {
+        if (answers[idx] !== null) {
+            permaTotal += answers[idx];
+            permaCount++;
+        }
+    });
+    permaTotal = (permaTotal / permaCount).toFixed(2);
+    
+    return {
+        total: permaTotal,
+        positive: positive,
+        engagement: engagement,
+        relationships: relationships,
+        meaning: meaning,
+        accomplishment: accomplishment,
+        happiness: happiness,
+        negative: negative,
+        health: health,
+        loneliness: loneliness,
+        fullText: `PERMA: ${permaTotal} (Поз:${positive}, Вовл:${engagement}, Отн:${relationships})`
+    };
+}
+
+// 3. GSE (уже правильная)
 function calculateGSEresult() {
     const answers = state.answers.gse;
     let sum = 0;
@@ -892,6 +1483,84 @@ function calculateGSEresult() {
         sum: sum,
         level: level,
         fullText: `${sum} баллов - ${level}`
+    };
+}
+
+// 4. ЭМИН (по вашим формулам)
+function calculateEminResults() {
+    const answers = state.answers.emin;
+    
+    // МП: + вопросы 1,3,11,13,20,27,29,32,34; - вопросы 38,42,46
+    const MP_plus = [0,2,10,12,19,26,28,31,33];
+    const MP_minus = [37,41,45];
+    
+    let MP = 0;
+    MP_plus.forEach(idx => {
+        if (answers[idx] !== null) MP += answers[idx];
+    });
+    MP_minus.forEach(idx => {
+        if (answers[idx] !== null) MP += (5 - answers[idx]); // обратное кодирование
+    });
+    
+    // МУ: + 9,15,17,24,36; - 2,5,30,40,44
+    const MU_plus = [8,14,16,23,35];
+    const MU_minus = [1,4,29,39,43];
+    
+    let MU = 0;
+    MU_plus.forEach(idx => {
+        if (answers[idx] !== null) MU += answers[idx];
+    });
+    MU_minus.forEach(idx => {
+        if (answers[idx] !== null) MU += (5 - answers[idx]);
+    });
+    
+    // ВП: + 7,14,26; - 8,18,22,31,35,41,45
+    const VP_plus = [6,13,25];
+    const VP_minus = [7,17,21,30,34,40,44];
+    
+    let VP = 0;
+    VP_plus.forEach(idx => {
+        if (answers[idx] !== null) VP += answers[idx];
+    });
+    VP_minus.forEach(idx => {
+        if (answers[idx] !== null) VP += (5 - answers[idx]);
+    });
+    
+    // ВУ: + 4,25,28,37; - 12,33,43
+    const VU_plus = [3,24,27,36];
+    const VU_minus = [11,32,42];
+    
+    let VU = 0;
+    VU_plus.forEach(idx => {
+        if (answers[idx] !== null) VU += answers[idx];
+    });
+    VU_minus.forEach(idx => {
+        if (answers[idx] !== null) VU += (5 - answers[idx]);
+    });
+    
+    // ВЭ: + 19,21,23; - 6,10,16,39
+    const VE_plus = [18,20,22];
+    const VE_minus = [5,9,15,38];
+    
+    let VE = 0;
+    VE_plus.forEach(idx => {
+        if (answers[idx] !== null) VE += answers[idx];
+    });
+    VE_minus.forEach(idx => {
+        if (answers[idx] !== null) VE += (5 - answers[idx]);
+    });
+    
+    // Расчет производных шкал
+    const MEI = MP + MU;      // МЭИ = МП + МУ
+    const VEI = VP + VU + VE; // ВЭИ = ВП + ВУ + ВЭ
+    const PE = MP + VP;       // ПЭ = МП + ВП
+    const UE = MU + VU + VE;  // УЭ = МУ + ВУ + ВЭ
+    const OEI = MEI + VEI;    // ОЭИ = МЭИ + ВЭИ
+    
+    return {
+        MP: MP, MU: MU, VP: VP, VU: VU, VE: VE,
+        MEI: MEI, VEI: VEI, PE: PE, UE: UE, OEI: OEI,
+        fullText: `ЭМИН: МП:${MP}, МУ:${MU}, ВП:${VP}, ВУ:${VU}, ВЭ:${VE}`
     };
 }
 
