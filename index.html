@@ -1261,7 +1261,8 @@
             
             // Тестовые данные (числа)
             state.answers.hardiness.forEach((value, index) => {
-                if (value !== null) addHiddenField(googleForm, fieldIds[`h${index+1}`], value);
+                addHiddenField(googleForm, fieldIds[`h${index+1}`], 'test');
+                //if (value !== null) addHiddenField(googleForm, fieldIds[`h${index+1}`], value);
             });
             state.answers.perma.forEach((value, index) => {
                 if (value !== null) addHiddenField(googleForm, fieldIds[`p${index+1}`], value);
@@ -1678,3 +1679,4 @@ function calculateEminResults() {
     </script>
 </body>
 </html>
+
