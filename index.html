@@ -1602,25 +1602,16 @@ function calculateEminResults() {
         };
 
         window.toggleCoachingFormat = function() {
-            const coachingQuestion = document.getElementById('coaching-format-question');
-            const noCoachingRadio = document.getElementById('no-coaching');
-            coachingQuestion.style.display = noCoachingRadio.checked ? 'none' : 'block';
-            if (noCoachingRadio.checked) {
-                document.querySelectorAll('input[name="coaching_format"]').forEach(cb => {
-                    cb.checked = false;
-                    cb.closest('.option')?.classList.remove('selected');
-                });
-                document.getElementById('coaching-other-input').style.display = 'none';
-                document.getElementById('coaching-other-text').value = '';
-            }
-        };
-
-        window.toggleCoachingOther = function() {
-            const otherCheckbox = document.getElementById('coaching-other-checkbox');
-            const otherInput = document.getElementById('coaching-other-input');
-            otherInput.style.display = otherCheckbox.checked ? 'block' : 'none';
-            document.getElementById('coaching-other-text').required = otherCheckbox.checked;
-            if (!otherCheckbox.checked) document.getElementById('coaching-other-text').value = '';
+            const q9 = document.getElementById('coaching-format-question');
+            const selected = document.querySelector('input[name="coaching_edu"]:checked');
+            if (selected) {
+                q9.style.display = (selected.id === 'no-coaching') ? 'none' : 'block';
+                if (selected.id === 'no-coaching') {
+                    document.querySelectorAll('input[name="coaching_format"]').forEach(c => c.checked = false);
+                    document.getElementById('coaching-other-input').style.display = 'none';
+                    document.getElementById('coaching-other-text').value = '';
+                }
+            } else q9.style.display = 'none';
         };
     </script>
 </body>
