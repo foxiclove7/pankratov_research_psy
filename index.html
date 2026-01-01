@@ -1212,19 +1212,28 @@
         function validateForm(formId) {
             const form = document.getElementById(formId);
             let isValid = true;
-            form.querySelectorAll('[required]').forEach(input => {
-                const question = input.closest('.question');
-                if (question) {
-                    question.classList.remove('has-error');
-                }
 
-                if (!input.value && !input.checked) {
-                    isValid = false;
-                    if (question) {
-                        question.classList.add('has-error');
+            const inputs = form.querySelectorAll('input[required]');
+            const groupedInputs = Object.groupBy(inputs, input => {
+                return input.name;
+            });
+
+            groupedInputs.forEach(inputGroup => {
+                let isChecked = false;
+                inputGroup.forEach(input => {
+                    if (input.checked) {
+                        isChecked = true;
+                        input.closest('.question')?.classList.remove('has-error');
                     }
+                });
+        
+                if (!isChecked) {
+                    isValid = false;
+                    const question = inputGroup[0].closest('.question');
+                    if (question) question.classList.add('has-error');
                 }
             });
+
             if (!isValid) alert('Пожалуйста, ответьте на все вопросы');
             return isValid;
         }
@@ -1684,6 +1693,7 @@ function calculateEminResults() {
     </script>
 </body>
 </html>
+
 
 
 
