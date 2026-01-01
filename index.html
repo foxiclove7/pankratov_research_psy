@@ -1086,6 +1086,7 @@
         input.value = i;
         input.id = `perma-${number-1}-${i}`;
         input.style.display = 'none';
+        input.required = true;
         
         // Обработчик выбора
         const selectHandler = function() {
@@ -1213,10 +1214,15 @@
             let isValid = true;
             form.querySelectorAll('[required]').forEach(input => {
                 const question = input.closest('.question');
-                if (question) question.classList.remove('has-error');
+                if (question) {
+                    question.classList.remove('has-error');
+                }
+
                 if (!input.value && !input.checked) {
                     isValid = false;
-                    input.closest('.question')?.classList.add('has-error');
+                    if (question) {
+                        question.classList.add('has-error');
+                    }
                 }
             });
             if (!isValid) alert('Пожалуйста, ответьте на все вопросы');
@@ -1339,7 +1345,7 @@
             const input = document.createElement('input');
             input.type = 'hidden';
             input.name = name;
-            input.value = value.toString();
+            input.value = value?.toString();
             form.appendChild(input);
         }
 
@@ -1678,5 +1684,6 @@ function calculateEminResults() {
     </script>
 </body>
 </html>
+
 
 
