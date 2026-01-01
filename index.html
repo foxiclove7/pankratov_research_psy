@@ -1220,7 +1220,9 @@
 
             Object.keys(groupedInputs).forEach(name => {
                 let isChecked = false;
-                groupedInputs[name].forEach(input => {
+                const inputGroup = groupedInputs[name];
+
+                inputGroup.forEach(input => {
                     if (input.checked) {
                         isChecked = true;
                         input.closest('.question')?.classList.remove('has-error');
@@ -1693,6 +1695,7 @@ function calculateEminResults() {
     </script>
 </body>
 </html>
+
 
 
 
