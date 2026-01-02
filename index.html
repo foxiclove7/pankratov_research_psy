@@ -541,7 +541,7 @@
             
             // Обратные вопросы (индексы с 0)
             reverseQuestions: {
-                hardiness: [1,2,9,10,13,27,31,36,37,39,41], // Вопросы 2,3,10,11,14,28,32,37,38,40,42
+                hardiness: [1,2,9,10,13,27,31,36,37,39,41, 0,4,5,7,15,19,26,30,34,38,42, 6,12,17,18,25,29,32,35], // Вопросы 2,3,10,11,14,28,32,37,38,40,42
                 emin: [1,4,5,7,9,10,11,16,17,18,21,22,29,30,31,33,34,35,37,38,39,40,41,42,43,44,45] // Вопросы с минусом
             },
             
@@ -1492,39 +1492,27 @@ function calculateHardinessResults() {
     const answers = state.answers.hardiness;
     
     // Вовлеченность: прямые 4,12,22,23,24,29,41; обратные 2,3,10,11,14,28,32,37,38,40,42
-    const engagementDirect = [3,11,21,22,23,28,40]; // индексы с 0
-    const engagementReverse = [1,2,9,10,13,27,31,36,37,39,41];
+    const engagementData = [3,11,21,22,23,28,40, 1,2,9,10,13,27,31,36,37,39,41]; // индексы с 0
     
     let engagement = 0;
-    engagementDirect.forEach(idx => {
+    engagementData.forEach(idx => {
         if (answers[idx] !== null) engagement += answers[idx];
-    });
-    engagementReverse.forEach(idx => {
-        if (answers[idx] !== null) engagement += (3 - answers[idx]); // обратное кодирование
     });
     
     // Контроль: прямые 9,15,17,21,25,44; обратные 1,5,6,8,16,20,27,31,35,39,43
-    const controlDirect = [8,14,16,20,24,43];
-    const controlReverse = [0,4,5,7,15,19,26,30,34,38,42];
+    const controlData = [8,14,16,20,24,43, 0,4,5,7,15,19,26,30,34,38,42];
     
     let control = 0;
-    controlDirect.forEach(idx => {
+    controlData.forEach(idx => {
         if (answers[idx] !== null) control += answers[idx];
-    });
-    controlReverse.forEach(idx => {
-        if (answers[idx] !== null) control += (3 - answers[idx]);
     });
     
     // Принятие риска: прямые 34,45; обратные 7,13,18,19,26,30,33,36
-    const riskDirect = [33,44];
-    const riskReverse = [6,12,17,18,25,29,32,35];
+    const riskData = [33,44, 6,12,17,18,25,29,32,35];
     
     let risk = 0;
-    riskDirect.forEach(idx => {
+    riskData.forEach(idx => {
         if (answers[idx] !== null) risk += answers[idx];
-    });
-    riskReverse.forEach(idx => {
-        if (answers[idx] !== null) risk += (3 - answers[idx]);
     });
     
     const total = engagement + control + risk;
@@ -1816,5 +1804,6 @@ function calculateEminResults() {
     </script>
 </body>
 </html>
+
 
 
