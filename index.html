@@ -1212,6 +1212,7 @@
         function validateForm(formId) {
             const form = document.getElementById(formId);
             let isValid = true;
+            let firstInvalid = null;
 
             const inputs = form.querySelectorAll('input[required]');
             const groupedInputs = Object.groupBy(inputs, input => {
@@ -1225,18 +1226,37 @@
                 inputGroup.forEach(input => {
                     if (input.checked) {
                         isChecked = true;
-                        input.closest('.question')?.classList.remove('has-error');
                     }
                 });
         
-                if (!isChecked) {
+                const question = inputGroup[0].closest('.question');
+                if (isChecked) {
+                    question?.classList.remove('has-error');
+                }
+                else {
                     isValid = false;
-                    const question = inputGroup[0].closest('.question');
-                    if (question) question.classList.add('has-error');
+                    if (question) {
+                        question.classList.add('has-error');
+
+                        if (!firstInvalid) {
+                            firstInvalid = question;
+                        }
+                    }
                 }
             });
 
-            if (!isValid) alert('Пожалуйста, ответьте на все вопросы');
+            if (!isValid) {
+                alert('Пожалуйста, ответьте на все вопросы');
+
+                if (firstInvalid) {
+                    firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Анимация внимания
+                    firstInvalid.style.animation = 'none';
+                    setTimeout(() => {
+                        firstInvalid.style.animation = 'shake 0.5s';
+                    }, 10);
+                }
+            }
             return isValid;
         }
 
@@ -1695,6 +1715,7 @@ function calculateEminResults() {
     </script>
 </body>
 </html>
+
 
 
 
