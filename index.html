@@ -1178,34 +1178,89 @@
         // === ВАЛИДАЦИЯ ===
         function validateDemographicForm() {
             let isValid = true;
+            let firstInvalid = null;
             const radioGroups = ['age', 'gender', 'country', 'location', 'experience', 'manager', 'coaching_edu', 'coaching_use'];
-           radioGroups.forEach(group => {
-    const radios = document.querySelectorAll(`input[name="${group}"]`);
-    if (radios.length > 0) {
-        let isChecked = false;
-        radios.forEach(radio => {
-            if (radio.checked) {
-                isChecked = true;
-                radio.closest('.question')?.classList.remove('has-error');
+
+            radioGroups.forEach(group => {
+                const radios = document.querySelectorAll(`input[name="${group}"]`);
+                if (radios.length > 0) {
+                    let isChecked = false;
+                    radios.forEach(radio => {
+                        if (radio.checked) {
+                            isChecked = true;
+                        }
+                    });
+                    
+                    const question = radios[0].closest('.question');
+
+                    if (isChecked) {
+                        question?.classList.remove('has-error');
+                    }
+                    else {
+                        isValid = false;
+
+                        if (question) {
+                            question.classList.add('has-error');
+
+                            if (!firstInvalid) {
+                                firstInvalid = question;
+                            }
+                        }
+                    }
+                }
+            });
+
+            let textInput = document.querySelector('input[name="profession"]');
+            let textQuestion = textInput.closest('.question');
+
+            if (textInput.value.trim()) {
+                textQuestion?.classList.remove('has-error');
             }
-        });
-        
-        if (!isChecked) {
-            isValid = false;
-            const question = radios[0]?.closest('.question');
-            if (question) question.classList.add('has-error');
-        }
-    }
-});
-            if (!document.querySelector('input[name="profession"]').value.trim()) {
+            else {
                 isValid = false;
-                document.querySelector('input[name="profession"]').closest('.question').classList.add('has-error');
+
+                if (textQuestion) {
+                    textQuestion.classList.add('has-error');
+
+                    if (!firstInvalid) {
+                        firstInvalid = textQuestion;
+                    }
+                }
             }
-            if (document.querySelector('input[name="country"][value="Другая страна"]').checked && !document.getElementById('country-other-text').value.trim()) {
-                isValid = false;
-                document.getElementById('country-other-text').closest('.question').classList.add('has-error');
+
+            if (document.querySelector('input[name="country"][value="Другая страна"]').checked) {
+                textInput = document.getElementById('country-other-text');
+                textQuestion = textInput.closest('.question');
+
+                if (textInput.value.trim()) {
+                    textQuestion?.classList.remove('has-error');
+                }
+                else {
+                    isValid = false;
+
+                    if (textQuestion) {
+                        textQuestion.classList.add('has-error');
+
+                        if (!firstInvalid) {
+                            firstInvalid = textQuestion;
+                        }
+                    }
+                }
             }
-            if (!isValid) alert('Пожалуйста, заполните все обязательные поля');
+
+            if (!isValid) {
+                alert('Пожалуйста, заполните все обязательные поля');
+
+                if (firstInvalid) {
+                    firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Анимация внимания
+                    firstInvalid.style.animation = 'none';
+                    setTimeout(() => {
+                        firstInvalid.style.animation = 'shake 0.5s';
+                    }, 10);
+                }
+            }
+
             return isValid;
         }
 
@@ -1257,6 +1312,7 @@
                     }, 10);
                 }
             }
+
             return isValid;
         }
 
@@ -1715,6 +1771,7 @@ function calculateEminResults() {
     </script>
 </body>
 </html>
+
 
 
 
