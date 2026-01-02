@@ -1248,6 +1248,55 @@
                 }
             }
 
+            if (document.getElementById('no-coaching').checked) {
+                let isChecked = false;
+
+                const checkBoxes = document.querySelectorAll('input[name="coaching_format"]');
+
+                checkBoxes.forEach(cb => {
+                    if (cb.checked) {
+                        isChecked = true;
+                    }
+                });
+                    
+                const coachingFormatQuestion = checkBoxes[0].closest('.question');
+
+                if (isChecked) {
+                    if (document.getElementById('coaching-other-checkbox').checked) {
+                        textInput = document.getElementById('coaching-other-input');
+
+                        if (textInput.value.trim()) {
+                            coachingFormatQuestion?.classList.remove('has-error');
+                        }
+                        else {
+                            isValid = false;
+
+                            if (coachingFormatQuestion) {
+                                coachingFormatQuestion.classList.add('has-error');
+
+                                if (!firstInvalid) {
+                                    firstInvalid = coachingFormatQuestion;
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        coachingFormatQuestion?.classList.remove('has-error');
+                    }
+                }
+                else {
+                    isValid = false;
+
+                    if (coachingFormatQuestion) {
+                        coachingFormatQuestion.classList.add('has-error');
+
+                        if (!firstInvalid) {
+                            firstInvalid = coachingFormatQuestion;
+                        }
+                    }
+                }
+            }
+
             if (!isValid) {
                 alert('Пожалуйста, заполните все обязательные поля');
 
@@ -1764,19 +1813,6 @@ function calculateEminResults() {
             }
         }
     }
-        // Обновление значения "Другое" для формата коучинга
-        function updateCoachingOther() {
-            
-        };
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
