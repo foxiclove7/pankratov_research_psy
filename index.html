@@ -1248,7 +1248,7 @@
                 }
             }
 
-            if (document.getElementById('no-coaching').checked) {
+            if (!document.getElementById('no-coaching').checked) {
                 let isChecked = false;
 
                 const checkBoxes = document.querySelectorAll('input[name="coaching_format"]');
@@ -1816,3 +1816,4 @@ function calculateEminResults() {
     </script>
 </body>
 </html>
+
