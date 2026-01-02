@@ -531,9 +531,9 @@
                 gse: {"Абсолютно неверно": 1, "Едва ли это верно": 2, "Скорее всего верно": 3, "Совершенно верно": 4},
                 
                 // ЭМИН: прямые вопросы
-                emin_direct: {"Совсем не согласен": 1, "Скорее не согласен": 2, "Скорее согласен": 3, "Полностью согласен": 4},
+                emin_direct: {"Совсем не согласен": 0, "Скорее не согласен": 1, "Скорее согласен": 2, "Полностью согласен": 3},
                 // ЭМИН: обратные вопросы (вопросы с минусом в ключе)
-                emin_reverse: {"Совсем не согласен": 4, "Скорее не согласен": 3, "Скорее согласен": 2, "Полностью согласен": 1},
+                emin_reverse: {"Совсем не согласен": 3, "Скорее не согласен": 2, "Скорее согласен": 1, "Полностью согласен": 0},
                 
                 // PERMA: значения как есть (0-10)
                 perma: value => parseInt(value)
@@ -541,8 +541,8 @@
             
             // Обратные вопросы (индексы с 0)
             reverseQuestions: {
-                hardiness: [1,2,9,10,13,27,31,36,37,39,41, 0,4,5,7,15,19,26,30,34,38,42, 6,12,17,18,25,29,32,35], // Вопросы 2,3,10,11,14,28,32,37,38,40,42
-                emin: [1,4,5,7,9,10,11,16,17,18,21,22,29,30,31,33,34,35,37,38,39,40,41,42,43,44,45] // Вопросы с минусом
+                hardiness: [1,2,9,10,13,27,31,36,37,39,41, 0,4,5,7,15,19,26,30,34,38,42, 6,12,17,18,25,29,32,35], // Вопросы 2,3,10,11,14,28,32,37,38,40,42...
+                emin: [37,41,45, 1,4,29,39,43, 7,17,21,30,34,40,44, 11,32,42, 5,9,15,38] // Вопросы с минусом
             },
             
             // Вопросы тестов
@@ -964,7 +964,7 @@
                     break;
                 case 'emin':
                     options = ["Совсем не согласен", "Скорее не согласен", "Скорее согласен", "Полностью согласен"];
-                    values = isReverse ? [4,3,2,1] : [1,2,3,4];
+                    values = isReverse ? [3,2,1,0] : [0,1,2,3];
                     break;
             }
             
@@ -1656,63 +1656,43 @@ function calculateEminResults() {
     const answers = state.answers.emin;
     
     // МП: + вопросы 1,3,11,13,20,27,29,32,34; - вопросы 38,42,46
-    const MP_plus = [0,2,10,12,19,26,28,31,33];
-    const MP_minus = [37,41,45];
+    const MP_data = [0,2,10,12,19,26,28,31,33, 37,41,45];
     
     let MP = 0;
-    MP_plus.forEach(idx => {
+    MP_data.forEach(idx => {
         if (answers[idx] !== null) MP += answers[idx];
-    });
-    MP_minus.forEach(idx => {
-        if (answers[idx] !== null) MP += (5 - answers[idx]); // обратное кодирование
     });
     
     // МУ: + 9,15,17,24,36; - 2,5,30,40,44
-    const MU_plus = [8,14,16,23,35];
-    const MU_minus = [1,4,29,39,43];
+    const MU_data = [8,14,16,23,35, 1,4,29,39,43];
     
     let MU = 0;
-    MU_plus.forEach(idx => {
+    MU_data.forEach(idx => {
         if (answers[idx] !== null) MU += answers[idx];
-    });
-    MU_minus.forEach(idx => {
-        if (answers[idx] !== null) MU += (5 - answers[idx]);
     });
     
     // ВП: + 7,14,26; - 8,18,22,31,35,41,45
-    const VP_plus = [6,13,25];
-    const VP_minus = [7,17,21,30,34,40,44];
+    const VP_data = [6,13,25, 7,17,21,30,34,40,44];
     
     let VP = 0;
-    VP_plus.forEach(idx => {
+    VP_data.forEach(idx => {
         if (answers[idx] !== null) VP += answers[idx];
-    });
-    VP_minus.forEach(idx => {
-        if (answers[idx] !== null) VP += (5 - answers[idx]);
     });
     
     // ВУ: + 4,25,28,37; - 12,33,43
-    const VU_plus = [3,24,27,36];
-    const VU_minus = [11,32,42];
+    const VU_data = [3,24,27,36, 11,32,42];
     
     let VU = 0;
-    VU_plus.forEach(idx => {
+    VU_data.forEach(idx => {
         if (answers[idx] !== null) VU += answers[idx];
-    });
-    VU_minus.forEach(idx => {
-        if (answers[idx] !== null) VU += (5 - answers[idx]);
     });
     
     // ВЭ: + 19,21,23; - 6,10,16,39
-    const VE_plus = [18,20,22];
-    const VE_minus = [5,9,15,38];
+    const VE_data = [18,20,22, 5,9,15,38];
     
     let VE = 0;
-    VE_plus.forEach(idx => {
+    VE_data.forEach(idx => {
         if (answers[idx] !== null) VE += answers[idx];
-    });
-    VE_minus.forEach(idx => {
-        if (answers[idx] !== null) VE += (5 - answers[idx]);
     });
     
     // Расчет производных шкал
@@ -1804,6 +1784,7 @@ function calculateEminResults() {
     </script>
 </body>
 </html>
+
 
 
 
